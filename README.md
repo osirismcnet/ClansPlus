@@ -117,6 +117,18 @@ You might need these plugins to utilize my plugin resources totally.
         - clanresetall
 ## Update history
 <details>
+<summary>2.9</summary>
+
+	- Fixed: Set Manager item lore
+	- Supported: Minecraft-heads API v2
+	- Added: Getting head item from URL for future updates
+	- Added: custom-heads settings in config.yml
+	- Updated: JDK 23 to JDK 25
+	- Updated: Libs
+	- Removed: Google Common lib
+	- Organized: Sign Change related events
+</details>
+<details>
 <summary>2.8</summary>
 
 	- Fixed: Dupe Item from Clan Storage
