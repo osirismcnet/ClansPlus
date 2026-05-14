@@ -95,7 +95,8 @@ public class ItemUtil {
                 .replace("%onlineStatus%", (onlineStatus ? Messages.ONLINE_STATUS_ONLINE : Messages.ONLINE_STATUS_OFFLINE))
                 .replace("%lastActivated%", StringUtil.dateTimeToDateFormat(playerData.getLastActivated()))
                 .replace("%scoreCollected%", String.valueOf(playerData.getScoreCollected()))
-                .replace("%pointsLost%", String.valueOf(playerData.getPointsLost()))));
+                .replace("%pointsLost%", String.valueOf(playerData.getPointsLost()))
+                .replace("%pointsGained%", String.valueOf(playerData.getPointsGained()))));
         itemMeta.setLore(itemLore);
         modItem.setItemMeta(itemMeta);
         return modItem;

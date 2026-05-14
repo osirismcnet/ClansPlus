@@ -121,6 +121,7 @@ items:
       - '&fJoined on: &e%joinDate%'
       - '&fRank: %rank%'
       - '&fPoints earned: &b%scoreCollected%'
+      - '&fPoints gained: &a%pointsGained%'
       - '&fPoints lost: &c%pointsLost%'
       - ''
       - '&eClick to interact'
