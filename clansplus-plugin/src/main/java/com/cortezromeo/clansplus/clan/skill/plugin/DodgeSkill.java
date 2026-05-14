@@ -52,36 +52,6 @@ public class DodgeSkill {
     }
 
     public static boolean onDamageEvent(SkillData skillData, EntityDamageByEntityEvent event) {
-        if (!skillData.isEnabled()) return false;
-
-        Player damager = (Player) event.getDamager();
-        Player victim = (Player) event.getEntity();
-        IClanData victimClanData = PluginDataManager.getClanDatabaseByPlayerName(victim.getName());
-
-        if (victimClanData == null) return false;
-
-        int skillLevel = victimClanData.getSkillLevel().get(skillData.getId());
-
-        // player clan's has this skill
-        if (skillLevel > 0) {
-            double chanceToActivate = skillData.getRateToActivate().get(skillLevel) / 100;
-
-            if (new Random().nextDouble() < chanceToActivate) {
-                try {
-                    event.setCancelled(true);
-
-                    if (skillLevel >= levelDamageReflection)
-                        damager.damage(CalculatorUtil.evaluate(levelDamageEvaluation.replace("%damage%", String.valueOf(event.getDamage()))));
-
-                    Location victimLocation = event.getEntity().getLocation();
-                    if (!skillData.getSoundName().equals(""))
-                        victimLocation.getWorld().playSound(victimLocation, ClansPlus.nms.createSound(skillData.getSoundName()), skillData.getSoundVolume(), skillData.getSoundPitch());
-                    return true;
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            }
-        }
         return false;
     }
 

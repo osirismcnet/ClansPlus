@@ -58,13 +58,12 @@ public class PluginDataYAMLStorage implements PluginStorage {
 
         List<String> members = new ArrayList<>();
         List<String> allies = new ArrayList<>();
-        HashMap<Integer, Integer> skillLevel = new HashMap<>();
         List<String> allyInvitation = new ArrayList<>();
         HashMap<Subject, Rank> permissionDefault = new HashMap<>();
         HashMap<Integer, Inventory> newInventory = new HashMap<>();
         for (Subject subject : Subject.values())
             permissionDefault.put(subject, Settings.CLAN_SETTING_PERMISSION_DEFAULT.get(subject));
-        ClanData clanData = new ClanData(clanName, null, null, null, 0, 0, 0, Settings.CLAN_SETTING_MAXIMUM_MEMBER_DEFAULT, new Date().getTime(), ItemType.valueOf(Settings.CLAN_SETTING_ICON_DEFAULT_TYPE.toUpperCase()), Settings.CLAN_SETTING_ICON_DEFAULT_VALUE, members, null, allies, skillLevel, permissionDefault, allyInvitation, 0, null, newInventory, Settings.CLAN_SETTINGS_MAX_STORAGE_DEFAULT);
+        ClanData clanData = new ClanData(clanName, null, null, null, 0, 0, Settings.CLAN_SETTING_MAXIMUM_MEMBER_DEFAULT, new Date().getTime(), ItemType.valueOf(Settings.CLAN_SETTING_ICON_DEFAULT_TYPE.toUpperCase()), Settings.CLAN_SETTING_ICON_DEFAULT_VALUE, members, null, allies, permissionDefault, allyInvitation, 0, null, newInventory, Settings.CLAN_SETTINGS_MAX_STORAGE_DEFAULT);
 
         if (!storage.contains("data")) return clanData;
 
@@ -134,7 +133,6 @@ public class PluginDataYAMLStorage implements PluginStorage {
         }
 
         clanData.setMessage(storage.getString("data.message"));
-        clanData.setWarPoint(storage.getLong("data.warpoint"));
 
         String iconType = storage.getString("data.icon.type");
         if (iconType != null) {
@@ -147,16 +145,6 @@ public class PluginDataYAMLStorage implements PluginStorage {
             Location location = new Location(Bukkit.getWorld(spawnWorld), storage.getDouble("data.spawn.x"), storage.getDouble("data.spawn.y"), storage.getDouble("data.spawn.z"));
             clanData.setSpawnPoint(location);
         }
-
-        clanData.getSkillLevel().put(1, storage.getInt("data.skill.1"));
-        clanData.getSkillLevel().put(2, storage.getInt("data.skill.2"));
-        clanData.getSkillLevel().put(3, storage.getInt("data.skill.3"));
-        clanData.getSkillLevel().put(4, storage.getInt("data.skill.4"));
-
-/*        data.setSkillLevel(SkillType.critDamage, storage.getInt("data.skill.1"));
-        data.setSkillLevel(SkillType.boostScore, storage.getInt("data.skill.2"));
-        data.setSkillLevel(SkillType.dodge, storage.getInt("data.skill.3"));
-        data.setSkillLevel(SkillType.vampire, storage.getInt("data.skill.4"));*/
 
         if (storage.getConfigurationSection("data.permission") == null) {
             HashMap<Subject, Rank> newPermissionDefault = new HashMap<>();
@@ -223,7 +211,6 @@ public class PluginDataYAMLStorage implements PluginStorage {
         storage.set("data.members", clanData.getMembers());
         storage.set("data.allies", clanData.getAllies());
         storage.set("data.warn", clanData.getWarning());
-        storage.set("data.warpoint", clanData.getWarPoint());
         storage.set("data.icon.type", clanData.getIconType().toString().toUpperCase());
         storage.set("data.icon.value", clanData.getIconValue());
         if (clanData.getSpawnPoint() != null) {
@@ -232,8 +219,6 @@ public class PluginDataYAMLStorage implements PluginStorage {
             storage.set("data.spawn.y", clanData.getSpawnPoint().getY());
             storage.set("data.spawn.z", clanData.getSpawnPoint().getZ());
         }
-        for (int skillID : clanData.getSkillLevel().keySet())
-            storage.set("data.skill." + skillID, clanData.getSkillLevel().get(skillID));
         for (Subject subject : clanData.getSubjectPermission().keySet()) {
             storage.set("data.permission." + subject.toString(), clanData.getSubjectPermission().get(subject).toString().toUpperCase());
         }
@@ -314,6 +299,7 @@ public class PluginDataYAMLStorage implements PluginStorage {
             playerData.setJoinDate(storage.getLong("data.join-date"));
             playerData.setScoreCollected(storage.getInt("data.score-collected"));
             playerData.setLastActivated(storage.getLong("data.last-activated"));
+            playerData.setPointsLost(storage.getLong("data.points-lost"));
             try {
                 playerData.setRank(Rank.valueOf(storage.getString("data.rank").toUpperCase()));
             } catch (Exception exception) {
@@ -336,6 +322,7 @@ public class PluginDataYAMLStorage implements PluginStorage {
         storage.set("data.join-date", playerData.getJoinDate());
         storage.set("data.score-collected", playerData.getScoreCollected());
         storage.set("data.last-activated", playerData.getLastActivated());
+        storage.set("data.points-lost", playerData.getPointsLost());
 
         try {
             storage.save(file);

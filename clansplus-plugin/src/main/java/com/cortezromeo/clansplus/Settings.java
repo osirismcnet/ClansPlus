@@ -31,13 +31,13 @@ public class Settings {
     public static long CLAN_SETTING_CREATE_CURRENCY;
     public static int CLAN_SETTING_TIME_TO_ACCEPT;
     public static int CLAN_SETTING_MAXIMUM_MEMBER_DEFAULT;
+    public static int CLAN_SETTING_INITIAL_SCORE;
     public static String CLAN_SETTING_ICON_DEFAULT_TYPE;
     public static String CLAN_SETTING_ICON_DEFAULT_VALUE;
     public static boolean CLAN_SETTINGS_MESSAGES_SETTINGS_ON_JOIN_WAR_EVENT_ENABLED;
     public static long CLAN_SETTINGS_MESSAGES_SETTINGS_ON_JOIN_WAR_EVENT_DELAY;
     public static boolean CLAN_SETTINGS_MESSAGES_SETTINGS_ON_JOIN_CLAN_BROADCAST_ENABLED;
     public static long CLAN_SETTINGS_MESSAGES_SETTINGS_ON_JOIN_CLAN_BROADCAST_DELAY;
-    public static HashMap<Integer, Integer> CLAN_SETTING_SKILL_DEFAULT = new HashMap<>();
     public static List<String> CLAN_SETTING_PROHIBITED_NAME = new ArrayList<>();
     public static List<String> CLAN_SETTING_PROHIBITED_CHARACTER = new ArrayList<>();
     public static int CLAN_SETTING_NAME_MINIMUM_LENGTH;
@@ -71,7 +71,6 @@ public class Settings {
     public static String SOFT_DEPEND_PLACEHOLDERAPI_CLAN_OWNER;
     public static String SOFT_DEPEND_PLACEHOLDERAPI_CLAN_MESSAGE;
     public static String SOFT_DEPEND_PLACEHOLDERAPI_CLAN_SCORE;
-    public static String SOFT_DEPEND_PLACEHOLDERAPI_CLAN_WARPONT;
     public static String SOFT_DEPEND_PLACEHOLDERAPI_CLAN_WARNING;
     public static String SOFT_DEPEND_PLACEHOLDERAPI_CLAN_MAXMEMBERS;
     public static String SOFT_DEPEND_PLACEHOLDERAPI_CLAN_CREATEDDATE;
@@ -117,21 +116,13 @@ public class Settings {
         CLAN_SETTING_CREATE_TYPE = configuration.getString("clan-settings.creating-clan-settings.currency-requirement.type");
         CLAN_SETTING_CREATE_CURRENCY = configuration.getLong("clan-settings.creating-clan-settings.currency-requirement.value");
         CLAN_SETTING_MAXIMUM_MEMBER_DEFAULT = configuration.getInt("clan-settings.creating-clan-settings.maximum-member-default");
+        CLAN_SETTING_INITIAL_SCORE = configuration.getInt("clan-settings.creating-clan-settings.initial-score", 50);
         CLAN_SETTING_ICON_DEFAULT_TYPE = configuration.getString("clan-settings.creating-clan-settings.icon-default.type");
         CLAN_SETTING_ICON_DEFAULT_VALUE = configuration.getString("clan-settings.creating-clan-settings.icon-default.value");
         CLAN_SETTINGS_MESSAGES_SETTINGS_ON_JOIN_WAR_EVENT_ENABLED = configuration.getBoolean("clan-settings.on-join.war-event.enabled");
         CLAN_SETTINGS_MESSAGES_SETTINGS_ON_JOIN_WAR_EVENT_DELAY = configuration.getLong("clan-settings.on-join.war-event.delay");
         CLAN_SETTINGS_MESSAGES_SETTINGS_ON_JOIN_CLAN_BROADCAST_ENABLED = configuration.getBoolean("clan-settings.on-join.clan-broadcast.enabled");
         CLAN_SETTINGS_MESSAGES_SETTINGS_ON_JOIN_CLAN_BROADCAST_DELAY = configuration.getLong("clan-settings.on-join.clan-broadcast.enabled");
-        if (!CLAN_SETTING_SKILL_DEFAULT.isEmpty()) CLAN_SETTING_SKILL_DEFAULT.clear();
-        for (String skillIDString : configuration.getConfigurationSection("clan-settings.creating-clan-settings.skill-level-default").getKeys(false)) {
-            try {
-                int skillID = Integer.parseInt(skillIDString);
-                CLAN_SETTING_SKILL_DEFAULT.put(skillID, configuration.getInt("clan-settings.creating-clan-settings.skill-level-default." + skillID));
-            } catch (Exception exception) {
-                exception.printStackTrace();
-            }
-        }
         CLAN_SETTING_TIME_TO_ACCEPT = configuration.getInt("clan-settings.invite-settings.time-to-accept");
         if (!CLAN_SETTING_PROHIBITED_NAME.isEmpty()) CLAN_SETTING_PROHIBITED_NAME.clear();
         CLAN_SETTING_PROHIBITED_NAME.addAll(configuration.getStringList("clan-settings.clan-name-settings.prohibited-name"));
@@ -170,7 +161,6 @@ public class Settings {
         SOFT_DEPEND_PLACEHOLDERAPI_CLAN_OWNER = configuration.getString("soft-depends.placeholderapi.placeholders.clan_owner");
         SOFT_DEPEND_PLACEHOLDERAPI_CLAN_MESSAGE = configuration.getString("soft-depends.placeholderapi.placeholders.clan_message");
         SOFT_DEPEND_PLACEHOLDERAPI_CLAN_SCORE = configuration.getString("soft-depends.placeholderapi.placeholders.clan_score");
-        SOFT_DEPEND_PLACEHOLDERAPI_CLAN_WARPONT = configuration.getString("soft-depends.placeholderapi.placeholders.clan_warpoint");
         SOFT_DEPEND_PLACEHOLDERAPI_CLAN_WARNING = configuration.getString("soft-depends.placeholderapi.placeholders.clan_warning");
         SOFT_DEPEND_PLACEHOLDERAPI_CLAN_MAXMEMBERS = configuration.getString("soft-depends.placeholderapi.placeholders.clan_maxmembers");
         SOFT_DEPEND_PLACEHOLDERAPI_CLAN_CREATEDDATE = configuration.getString("soft-depends.placeholderapi.placeholders.clan_createddate");

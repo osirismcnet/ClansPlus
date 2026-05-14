@@ -31,10 +31,6 @@ public interface IClanData {
 
     void setScore(int score);
 
-    long getWarPoint();
-
-    void setWarPoint(long warPoint);
-
     int getWarning();
 
     void setWarning(int warning);
@@ -66,10 +62,6 @@ public interface IClanData {
     List<String> getAllies();
 
     void setAllies(List<String> allies);
-
-    HashMap<Integer, Integer> getSkillLevel();
-
-    void setSkillLevel(HashMap<Integer, Integer> skillLevel);
 
     HashMap<Subject, Rank> getSubjectPermission();
 

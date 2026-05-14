@@ -56,7 +56,6 @@ public class ItemUtil {
         List<String> itemLore = itemMeta.getLore();
         itemLore.replaceAll(string -> ClansPlus.nms.addColor(string
                 .replace("%score%", String.valueOf(clanData.getScore()))
-                .replace("%warPoint%", String.valueOf(clanData.getWarPoint()))
                 .replace("%formatClanName%", ClanManager.getFormatClanName(clanData))
                 .replace("%clanName%", String.valueOf(clanData.getName()))
                 .replace("%clanCustomName%", ClanManager.getFormatClanCustomName(clanData)))
@@ -95,7 +94,8 @@ public class ItemUtil {
                 .replace("%joinDate%", StringUtil.dateTimeToDateFormat(playerData.getJoinDate()))
                 .replace("%onlineStatus%", (onlineStatus ? Messages.ONLINE_STATUS_ONLINE : Messages.ONLINE_STATUS_OFFLINE))
                 .replace("%lastActivated%", StringUtil.dateTimeToDateFormat(playerData.getLastActivated()))
-                .replace("%scoreCollected%", String.valueOf(playerData.getScoreCollected()))));
+                .replace("%scoreCollected%", String.valueOf(playerData.getScoreCollected()))
+                .replace("%pointsLost%", String.valueOf(playerData.getPointsLost()))));
         itemMeta.setLore(itemLore);
         modItem.setItemMeta(itemMeta);
         return modItem;

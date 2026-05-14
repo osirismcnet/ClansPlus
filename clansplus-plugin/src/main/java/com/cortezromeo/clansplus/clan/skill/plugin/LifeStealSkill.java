@@ -51,36 +51,6 @@ public class LifeStealSkill {
     }
 
     public static boolean onDamageEvent(SkillData skillData, EntityDamageByEntityEvent event) {
-        if (!skillData.isEnabled()) return false;
-
-        Player damager = (Player) event.getDamager();
-        IClanData damagerClanData = PluginDataManager.getClanDatabaseByPlayerName(damager.getName());
-
-        if (damagerClanData == null) return false;
-
-        int skillLevel = damagerClanData.getSkillLevel().get(skillData.getId());
-
-        // player clan's has this skill
-        if (skillLevel > 0) {
-            double chanceToActivate = skillData.getRateToActivate().get(skillLevel) / 100;
-
-            if (new Random().nextDouble() < chanceToActivate) {
-                try {
-                    double revivingHealth = CalculatorUtil.evaluate(healEvaluation.get(skillLevel).replace("%playerMaxHealth%", String.valueOf(damager.getMaxHealth())));
-                    if (damager.getHealth() + revivingHealth > damager.getMaxHealth())
-                        damager.setHealth(damager.getMaxHealth());
-                    else damager.setHealth(damager.getHealth() + revivingHealth);
-
-                    Location damagerLocation = damager.getLocation();
-                    damagerLocation.getWorld().spawnParticle(ClansPlus.nms.getParticle("VILLAGER_HAPPY"), damagerLocation, 2);
-                    if (!skillData.getSoundName().equals(""))
-                        damagerLocation.getWorld().playSound(damagerLocation, ClansPlus.nms.createSound(skillData.getSoundName()), skillData.getSoundVolume(), skillData.getSoundPitch());
-                    return true;
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            }
-        }
         return false;
     }
 

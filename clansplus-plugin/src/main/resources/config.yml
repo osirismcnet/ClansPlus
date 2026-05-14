@@ -73,6 +73,8 @@ clan-settings:
       value: 1000
     # Default maximum number of members.
     maximum-member-default: 5
+    # Initial score for newly created clans.
+    initial-score: 50
     # Default clan icon upon creation.
     icon-default:
       type: MATERIAL
@@ -239,7 +241,6 @@ soft-depends:
       clan_owner: '%value%'
       clan_message: '%value%'
       clan_score: '%value%'
-      clan_warpoint: '%value%'
       clan_warning: '%value%'
       clan_maxmembers: '%value%'
       clan_createddate: '%value%'

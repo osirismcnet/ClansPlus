@@ -18,8 +18,6 @@ public class Messages {
     public static String CURRENCY_DISPLAY_VAULT_NAME;
     public static String CURRENCY_DISPLAY_PLAYERPOINTS_SYMBOL;
     public static String CURRENCY_DISPLAY_PLAYERPOINTS_NAME;
-    public static String CURRENCY_DISPLAY_WARPOINT_SYMBOL;
-    public static String CURRENCY_DISPLAY_WARPOINT_NAME;
     public static String STATUS_ENABLE;
     public static String STATUS_DISABLE;
     public static String ONLINE_STATUS_OFFLINE;
@@ -175,8 +173,6 @@ public class Messages {
         CURRENCY_DISPLAY_VAULT_NAME = fileConfiguration.getString("currency-display.VAULT.name");
         CURRENCY_DISPLAY_PLAYERPOINTS_SYMBOL = fileConfiguration.getString("currency-display.PLAYERPOINTS.symbol");
         CURRENCY_DISPLAY_PLAYERPOINTS_NAME = fileConfiguration.getString("currency-display.PLAYERPOINTS.name");
-        CURRENCY_DISPLAY_WARPOINT_SYMBOL = fileConfiguration.getString("currency-display.WARPOINT.symbol");
-        CURRENCY_DISPLAY_WARPOINT_NAME = fileConfiguration.getString("currency-display.WARPOINT.name");
         STATUS_ENABLE = fileConfiguration.getString("status.ENABLE");
         STATUS_DISABLE = fileConfiguration.getString("status.DISABLE");
         ONLINE_STATUS_OFFLINE = fileConfiguration.getString("online-status.offline");

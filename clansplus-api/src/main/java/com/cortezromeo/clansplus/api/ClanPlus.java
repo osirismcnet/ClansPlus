@@ -70,8 +70,6 @@ public interface ClanPlus {
 
         HashMap<String, Integer> getClansPlayerSize();
 
-        HashMap<String, Long> getClansWarpointHashMap();
-
         HashMap<String, Long> getClansCreatedDate();
 
         List<String> getClansCustomName();

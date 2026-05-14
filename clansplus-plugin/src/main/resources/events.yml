@@ -80,28 +80,22 @@ events:
       enabled: true
       top-score-clans:
         1:
-          warpoint: 60
           commands:
             - ''
         2:
-          warpoint: 50
           commands:
             - ''
         3:
-          warpoint: 40
           commands:
             - ''
       most-damage-caused-players:
         1:
-          warpoint: 60
           commands:
             - ''
         2:
-          warpoint: 50
           commands:
             - ''
         3:
-          warpoint: 40
           commands:
             - ''
 
@@ -152,14 +146,14 @@ events:
                     &fThe event has ended
           &r
           &fTop 3 clans with the most points&r
-            &#fcd3031st. &f%topScoreClaimed_1_name% &#85a832+%topScoreClaimed_1_score% points &#e0122a(60 Warpoint)
-            &#cccccc2nd. &f%topScoreClaimed_2_name% &#85a832+%topScoreClaimed_2_score% points &#e0122a(50 Warpoint)
-            &#7542003rd. &f%topScoreClaimed_3_name% &#85a832+%topScoreClaimed_3_score% points &#e0122a(40 Warpoint)
+            &#fcd3031st. &f%topScoreClaimed_1_name% &#85a832+%topScoreClaimed_1_score% points
+            &#cccccc2nd. &f%topScoreClaimed_2_name% &#85a832+%topScoreClaimed_2_score% points
+            &#7542003rd. &f%topScoreClaimed_3_name% &#85a832+%topScoreClaimed_3_score% points
           &r
           &fTop 3 players with highest damage&r
-            &#fcd3031st. &f%topDamage_1_name% &#eb4034%topDamage_1_score% dmg &#e0122a(60 Warpoint)
-            &#cccccc2nd. &f%topDamage_2_name% &#eb4034%topDamage_2_score% dmg &#e0122a(50 Warpoint)
-            &#7542003rd. &f%topDamage_3_name% &#eb4034%topDamage_3_score% dmg &#e0122a(40 Warpoint)
+            &#fcd3031st. &f%topDamage_1_name% &#eb4034%topDamage_1_score% dmg
+            &#cccccc2nd. &f%topDamage_2_name% &#eb4034%topDamage_2_score% dmg
+            &#7542003rd. &f%topDamage_3_name% &#eb4034%topDamage_3_score% dmg
           &r
           &fTotal damage dealt: &b%totalDamagesCaused%
           &fTotal damage received: &b%totalDamagesCollected%

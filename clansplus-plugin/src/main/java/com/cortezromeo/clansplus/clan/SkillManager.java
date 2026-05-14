@@ -15,7 +15,11 @@ public class SkillManager {
     }
 
     public static int getSkillID(PluginSkill pluginSkill) {
-        return SkillsFile.get().getInt("plugin-skills." + pluginSkill.toString().toLowerCase() + ".ID");
+        try {
+            return SkillsFile.get().getInt("plugin-skills." + pluginSkill.toString().toLowerCase() + ".ID");
+        } catch (Exception e) {
+            return -1;
+        }
     }
 
     public static void registerPluginSkill(int pluginSkill, SkillData skillData) {

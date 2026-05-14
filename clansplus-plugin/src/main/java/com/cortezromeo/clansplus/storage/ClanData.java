@@ -17,7 +17,6 @@ public class ClanData implements IClanData {
     private String owner;
     private String message;
     private int score;
-    private long warPoint;
     private int warning;
     private int maxMembers;
     private long createdDate;
@@ -26,7 +25,6 @@ public class ClanData implements IClanData {
     private List<String> members;
     private Location spawnPoint;
     private List<String> allies;
-    private HashMap<Integer, Integer> skillLevel;
     private HashMap<Subject, Rank> subjectPermission;
     private List<String> allyInvitation;
     private long discordChannelID;
@@ -34,13 +32,12 @@ public class ClanData implements IClanData {
     private HashMap<Integer, Inventory> storage;
     private int maxStorage;
 
-    public ClanData(String name, String customName, String owner, String message, int score, long warPoint, int warning, int maxMembers, long createdDate, ItemType itemType, String iconValue, List<String> members, Location spawnPoint, List<String> allies, HashMap<Integer, Integer> skillLevel, HashMap<Subject, Rank> subjectPermission, List<String> allyInvitation, long discordChannelID, String discordJoinLink, HashMap<Integer, Inventory> storage, int maxStorage) {
+    public ClanData(String name, String customName, String owner, String message, int score, int warning, int maxMembers, long createdDate, ItemType itemType, String iconValue, List<String> members, Location spawnPoint, List<String> allies, HashMap<Subject, Rank> subjectPermission, List<String> allyInvitation, long discordChannelID, String discordJoinLink, HashMap<Integer, Inventory> storage, int maxStorage) {
         this.name = name;
         this.customName = customName;
         this.owner = owner;
         this.message = message;
         this.score = score;
-        this.warPoint = warPoint;
         this.warning = warning;
         this.maxMembers = maxMembers;
         this.createdDate = createdDate;
@@ -49,7 +46,6 @@ public class ClanData implements IClanData {
         this.members = members;
         this.spawnPoint = spawnPoint;
         this.allies = allies;
-        this.skillLevel = skillLevel;
         this.subjectPermission = subjectPermission;
         this.allyInvitation = allyInvitation;
         this.discordChannelID = discordChannelID;
@@ -106,16 +102,6 @@ public class ClanData implements IClanData {
     @Override
     public void setScore(int score) {
         this.score = score;
-    }
-
-    @Override
-    public long getWarPoint() {
-        return warPoint;
-    }
-
-    @Override
-    public void setWarPoint(long warPoint) {
-        this.warPoint = warPoint;
     }
 
     @Override
@@ -196,16 +182,6 @@ public class ClanData implements IClanData {
     @Override
     public void setAllies(List<String> allies) {
         this.allies = allies;
-    }
-
-    @Override
-    public HashMap<Integer, Integer> getSkillLevel() {
-        return skillLevel;
-    }
-
-    @Override
-    public void setSkillLevel(HashMap<Integer, Integer> skillLevel) {
-        this.skillLevel = skillLevel;
     }
 
     @Override

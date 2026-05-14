@@ -51,35 +51,6 @@ public class CriticalHitSkill {
     }
 
     public static boolean onDamageEvent(SkillData skillData, EntityDamageByEntityEvent event) {
-        if (!skillData.isEnabled()) return false;
-
-        Player damager = (Player) event.getDamager();
-        IClanData damagerClanData = PluginDataManager.getClanDatabaseByPlayerName(damager.getName());
-
-        if (damagerClanData == null) return false;
-
-        int skillLevel = damagerClanData.getSkillLevel().get(skillData.getId());
-
-        // player clan's has this skill
-        if (skillLevel > 0) {
-            double chanceToActivate = skillData.getRateToActivate().get(skillLevel) / 100;
-
-            if (new Random().nextDouble() < chanceToActivate) {
-                try {
-                    double damage = CalculatorUtil.evaluate(onHitDamageEvaluation.get(skillLevel).replace("%damage%", String.valueOf(event.getDamage())));
-                    event.setDamage(damage);
-
-                    Location victimLocation = event.getEntity().getLocation();
-                    victimLocation.getWorld().spawnParticle(ClansPlus.nms.getParticle("EXPLOSION"), victimLocation, 2);
-                    if (!skillData.getSoundName().equals(""))
-                        victimLocation.getWorld().playSound(victimLocation, ClansPlus.nms.createSound(skillData.getSoundName()), skillData.getSoundPitch(), skillData.getSoundVolume());
-
-                    return true;
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            }
-        }
         return false;
     }
 }

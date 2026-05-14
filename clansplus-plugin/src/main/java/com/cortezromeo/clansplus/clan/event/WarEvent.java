@@ -4,10 +4,6 @@ import com.cortezromeo.clansplus.ClansPlus;
 import com.cortezromeo.clansplus.api.storage.IClanData;
 import com.cortezromeo.clansplus.clan.ClanManager;
 import com.cortezromeo.clansplus.clan.EventManager;
-import com.cortezromeo.clansplus.clan.SkillManager;
-import com.cortezromeo.clansplus.clan.skill.PluginSkill;
-import com.cortezromeo.clansplus.clan.skill.SkillData;
-import com.cortezromeo.clansplus.clan.skill.plugin.BoostScoreSkill;
 import com.cortezromeo.clansplus.file.EventsFile;
 import com.cortezromeo.clansplus.language.Messages;
 import com.cortezromeo.clansplus.storage.PluginDataManager;
@@ -260,10 +256,6 @@ public class WarEvent {
                     if (eventConfigFile.getConfigurationSection(configPath).getKeys(false).contains(String.valueOf(top))) {
                         if (!PluginDataManager.getClanDatabase().containsKey(clanName)) continue;
 
-                        long warPointRewarded = eventConfigFile.getLong(configPath + "." + top + ".warpoint");
-                        PluginDataManager.getClanDatabase(clanName).setWarPoint(PluginDataManager.getClanDatabase(clanName).getWarPoint() + warPointRewarded);
-                        PluginDataManager.saveClanDatabaseToStorage(clanName);
-
                         for (String commandsRewarded : eventConfigFile.getStringList(configPath + "." + top + ".commands"))
                             CommandUtil.dispatchCommand(null, commandsRewarded.replace("%clan%", clanName));
                     }
@@ -279,13 +271,9 @@ public class WarEvent {
                     if (eventConfigFile.getConfigurationSection(configPath).getKeys(false).contains(String.valueOf(top))) {
                         if (!PluginDataManager.getPlayerDatabase().containsKey(playerName)) continue;
 
-                        long warPointRewarded = eventConfigFile.getLong(configPath + "." + top + ".warpoint");
                         String playerClanName = PluginDataManager.getPlayerDatabase(playerName).getClan();
 
                         if (playerClanName == null) continue;
-
-                        PluginDataManager.getClanDatabase(playerClanName).setWarPoint(PluginDataManager.getClanDatabase(playerClanName).getWarPoint() + warPointRewarded);
-                        PluginDataManager.saveClanDatabaseToStorage(playerClanName);
 
                         for (String commandsRewarded : eventConfigFile.getStringList(configPath + "." + top + ".commands"))
                             CommandUtil.dispatchCommand(Bukkit.getPlayer(playerName), commandsRewarded.replace("%clan%", playerClanName).replace("%player%", playerName));
@@ -328,25 +316,10 @@ public class WarEvent {
 
         if (WORLD_REQUIREMENT_ENABLED) if (!WORLD_REQUIREMENT_WORLDS.contains(damager.getWorld().getName())) return;
 
-        IClanData damagerClanData = PluginDataManager.getClanDatabaseByPlayerName(damager.getName());
-
-        if (damagerClanData == null) return;
-
-        SkillData dodgeSkillData = SkillManager.getSkillData().get(SkillManager.getSkillID(PluginSkill.DODGE));
-        if (dodgeSkillData != null) {
-            if (dodgeSkillData.onDamage(dodgeSkillData, event)) {
-                return;
-            }
-        }
+        if (PluginDataManager.getClanDatabaseByPlayerName(damager.getName()) == null) return;
 
         getPlayerDamagesCaused().put(damager.getName(), getPlayerDamagesCaused(damager.getName()) + (long) event.getDamage());
         getPlayerDamagesCollected().put(entityVictim.getName(), getPlayerDamagesCollected(entityVictim.getName()) + (long) event.getDamage());
-
-        for (int skillID : damagerClanData.getSkillLevel().keySet()) {
-            SkillData skillData = SkillManager.getSkillData().get(skillID);
-            if (skillData != null) if (SkillManager.getSkillID(PluginSkill.DODGE) != skillData.getId())
-                skillData.onDamage(skillData, event);
-        }
     }
 
     public void onPlayerDie(PlayerDeathEvent event) {
@@ -372,20 +345,7 @@ public class WarEvent {
         if (!killerClanData.getAllies().isEmpty())
             if (killerClanData.getAllies().contains(victimClanData.getName())) return;
 
-        killerClanData.setScore(killerClanData.getScore() + SCORE_PLAYER);
-        // save to hash map because the database will update a lot during war event
-        PluginDataManager.saveClanDatabaseToHashMap(killerClanData.getName(), killerClanData);
         clanScoreCollected.put(killerClanData.getName(), getClanScoreCollected(killerClanData.getName()) + SCORE_PLAYER);
-
-        SkillData boostScoreSkillData = SkillManager.getSkillData().get(SkillManager.getSkillID(PluginSkill.BOOST_SCORE));
-        String checkBoostScore = "";
-        if (boostScoreSkillData != null) {
-            boostScoreSkillData.onDie(boostScoreSkillData, killer.getName(), entityVictim.getName(), false);
-            int clanBoostScoreSkillLevel = killerClanData.getSkillLevel().get(boostScoreSkillData.getId());
-            if (clanBoostScoreSkillLevel > 0)
-                checkBoostScore = MESSAGES_CLAN_BROADCAST_PLACEHOLDER_CHECKBOOSTSCORE.replace("%bonusScore%", String.valueOf(BoostScoreSkill.boostScoreLevel.get(clanBoostScoreSkillLevel)));
-        }
-        alertClan(killerClanData.getName(), MESSAGES_CLAN_BROADCAST_GAIN_SCORE_PLAYER.replace("%player%", killer.getName()).replace("%target%", entityVictim.getName()).replace("%score%", String.valueOf(SCORE_PLAYER)).replace("%checkBoostScore%", checkBoostScore));
     }
 
     public void onEntityDie(EntityDeathEvent event) {
@@ -429,20 +389,8 @@ public class WarEvent {
             scoreAdded = SCORE_VANILLA_MOBS.get(entityName);
         }
 
-        killerClanData.setScore(killerClanData.getScore() + scoreAdded);
-        // save to hash map because the database will update a lot during war event
-        PluginDataManager.saveClanDatabaseToHashMap(killerClanData.getName(), killerClanData);
         clanScoreCollected.put(killerClanData.getName(), getClanScoreCollected(killerClanData.getName()) + scoreAdded);
-
-        SkillData boostScoreSkillData = SkillManager.getSkillData().get(SkillManager.getSkillID(PluginSkill.BOOST_SCORE));
-        String checkBoostScore = "";
-        if (boostScoreSkillData != null) {
-            boostScoreSkillData.onDie(boostScoreSkillData, killer.getName(), entityName, true);
-            int clanBoostScoreSkillLevel = killerClanData.getSkillLevel().get(boostScoreSkillData.getId());
-            if (clanBoostScoreSkillLevel > 0)
-                checkBoostScore = MESSAGES_CLAN_BROADCAST_PLACEHOLDER_CHECKBOOSTSCORE.replace("%bonusScore%", String.valueOf(BoostScoreSkill.boostScoreLevel.get(clanBoostScoreSkillLevel)));
-        }
-        alertClan(killerClanData.getName(), MESSAGES_CLAN_BROADCAST_GAIN_SCORE_MOB.replace("%player%", killer.getName()).replace("%target%", entityVictim.getName()).replace("%score%", String.valueOf(scoreAdded)).replace("%checkBoostScore%", checkBoostScore));
+        alertClan(killerClanData.getName(), MESSAGES_CLAN_BROADCAST_GAIN_SCORE_MOB.replace("%player%", killer.getName()).replace("%target%", entityVictim.getName()).replace("%score%", String.valueOf(scoreAdded)).replace("%checkBoostScore%", ""));
     }
 
     public void sendEventStatusMessage(Player player, boolean playSound) {

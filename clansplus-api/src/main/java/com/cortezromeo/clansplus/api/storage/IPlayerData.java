@@ -32,4 +32,8 @@ public interface IPlayerData {
 
     void setLastActivated(long lastActivated);
 
+    long getPointsLost();
+
+    void setPointsLost(long pointsLost);
+
 }

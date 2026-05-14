@@ -126,9 +126,6 @@ public class UpgradeMenuInventory extends ClanPlusInventoryBase {
                 super.open();
             }
         }
-        if (itemCustomData.equals("skillsMenu"))
-            new SkillsMenuInventory(getOwner(), playerClanData.getName(), false).open();
-
         return true;
     }
 
@@ -186,14 +183,6 @@ public class UpgradeMenuInventory extends ClanPlusInventoryBase {
             int upgradeMaxMembersItemSlot = fileConfiguration.getInt("items.upgradeMaxMember.slot");
             inventory.setItem(upgradeMaxMembersItemSlot, upgradeMaxMembersItem);
 
-            ItemStack skillsMenuItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
-                    ItemType.valueOf(fileConfiguration.getString("items.skillsMenu.type").toUpperCase()),
-                    fileConfiguration.getString("items.skillsMenu.value"),
-                    fileConfiguration.getInt("items.skillsMenu.customModelData"),
-                    fileConfiguration.getString("items.skillsMenu.name"),
-                    fileConfiguration.getStringList("items.skillsMenu.lore"), false), "skillsMenu");
-            int skillsMenuItemSlot = fileConfiguration.getInt("items.skillsMenu.slot");
-            inventory.setItem(skillsMenuItemSlot, skillsMenuItem);
         });
     }
 

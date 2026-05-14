@@ -10,12 +10,7 @@ import com.cortezromeo.clansplus.api.storage.IClanData;
 import com.cortezromeo.clansplus.api.storage.IPlayerData;
 import com.cortezromeo.clansplus.clan.ClanManager;
 import com.cortezromeo.clansplus.clan.EventManager;
-import com.cortezromeo.clansplus.clan.skill.plugin.BoostScoreSkill;
-import com.cortezromeo.clansplus.clan.skill.plugin.CriticalHitSkill;
-import com.cortezromeo.clansplus.clan.skill.plugin.DodgeSkill;
-import com.cortezromeo.clansplus.clan.skill.plugin.LifeStealSkill;
 import com.cortezromeo.clansplus.file.EventsFile;
-import com.cortezromeo.clansplus.file.SkillsFile;
 import com.cortezromeo.clansplus.file.UpgradeFile;
 import com.cortezromeo.clansplus.file.inventory.*;
 import com.cortezromeo.clansplus.inventory.ClanStorageInventory;
@@ -81,9 +76,7 @@ public class ClanAdminCommand implements CommandExecutor, TabExecutor {
                 AllyListInventoryFile.reload();
                 ManageAllyInventoryFile.reload();
                 ViewClanInventoryFile.reload();
-                UpgradePluginSkillListInventoryFile.reload();
                 UpgradeMenuInventoryFile.reload();
-                SkillsMenuInventoryFile.reload();
                 EventsMenuInventoryFile.reload();
                 ClanSettingsInventoryFile.reload();
                 SetIconCustomHeadListInventoryFile.reload();
@@ -93,7 +86,6 @@ public class ClanAdminCommand implements CommandExecutor, TabExecutor {
                 DisbandConfirmationInventoryFile.reload();
                 LeaveConfirmationInventoryFile.reload();
                 EventsFile.reload();
-                SkillsFile.reload();
                 UpgradeFile.reload();
 
                 Settings.setupValue();
@@ -101,11 +93,6 @@ public class ClanAdminCommand implements CommandExecutor, TabExecutor {
                 Vietnamese.reload();
                 English.reload();
                 Messages.setupValue(Settings.LANGUAGE);
-
-                CriticalHitSkill.registerSkill();
-                DodgeSkill.registerSkill();
-                LifeStealSkill.registerSkill();
-                BoostScoreSkill.registerSkill();
 
                 EventManager.getWarEvent().setupValue();
                 ClansPlus.support.discordSupport = new DiscordSupport(Settings.SOFT_DEPEND_DISCORDWEBHOOK_URL);
@@ -191,34 +178,6 @@ public class ClanAdminCommand implements CommandExecutor, TabExecutor {
                                 clanData.setScore(value);
                                 sender.sendMessage("Set " + clanName + " " + value + " " + clanDataType);
                                 sender.sendMessage(clanName + "''s new " + clanDataType + ": " + clanData.getScore());
-                            }
-                        } catch (Exception exception) {
-                            sender.sendMessage("Value is not available.");
-                            return false;
-                        }
-                    }
-
-                    // Warpoint
-                    if (clanDataType == ClanDataType.warpoint) {
-                        if (args[3].equalsIgnoreCase("reset")) {
-                            clanData.setWarPoint(0);
-                            sender.sendMessage("Reset " + clanName + " " + clanDataType);
-                            return false;
-                        }
-                        try {
-                            int value = Integer.parseInt(args[4]);
-                            if (args[3].equalsIgnoreCase("give")) {
-                                clanData.setWarPoint(clanData.getWarPoint() + value);
-                                sender.sendMessage("Gave " + clanName + " " + value + " " + clanDataType);
-                                sender.sendMessage(clanName + "''s new " + clanDataType + ": " + clanData.getWarPoint());
-                            } else if (args[3].equalsIgnoreCase("remove")) {
-                                clanData.setWarPoint(clanData.getWarPoint() - value);
-                                sender.sendMessage("Took " + clanName + " " + value + " " + clanDataType);
-                                sender.sendMessage(clanName + "''s new " + clanDataType + ": " + clanData.getWarPoint());
-                            } else if (args[3].equalsIgnoreCase("set")) {
-                                clanData.setWarPoint(value);
-                                sender.sendMessage("Set " + clanName + " " + value + " " + clanDataType);
-                                sender.sendMessage(clanName + "''s new " + clanDataType + ": " + clanData.getWarPoint());
                             }
                         } catch (Exception exception) {
                             sender.sendMessage("Value is not available.");
@@ -570,33 +529,41 @@ public class ClanAdminCommand implements CommandExecutor, TabExecutor {
                     }
                 }
             }
-            if (args[0].equalsIgnoreCase("setclanskilldata")) {
-                String clanName = args[1];
-                if (!PluginDataManager.getClanDatabase().containsKey(clanName)) {
-                    sender.sendMessage("Clan " + clanName + " does not exist.");
-                    return false;
-                } else {
-                    int skillID;
-                    int skilLevel;
-
-                    try {
-                        skillID = Integer.parseInt(args[2]);
-                        skilLevel = Integer.parseInt(args[3]);
-
-                        PluginDataManager.getClanDatabase(clanName).getSkillLevel().put(skillID, skilLevel);
-                        sender.sendMessage("Set skill ID " + skillID + " of clan " + clanName + " to " + skilLevel + ".");
-                        PluginDataManager.saveClanDatabaseToStorage(clanName);
-                    } catch (Exception exception) {
-                        sender.sendMessage("Skill ID or Skill Level must be a number!");
-                        return false;
-                    }
-                    return false;
+            if (args[0].equalsIgnoreCase("resetPoints")) {
+                for (String clanName : PluginDataManager.getClanDatabase().keySet()) {
+                    IClanData clanData = PluginDataManager.getClanDatabase(clanName);
+                    clanData.setScore(Settings.CLAN_SETTING_INITIAL_SCORE);
+                    PluginDataManager.saveClanDatabaseToStorage(clanName, clanData);
                 }
+                sender.sendMessage("All clan scores have been reset to " + Settings.CLAN_SETTING_INITIAL_SCORE + ".");
+                return true;
+            }
+            if (args[0].equalsIgnoreCase("givePoints")) {
+                if (args.length < 3) {
+                    sender.sendMessage("Usage: /clanAdmin givePoints <clanName> <amount>");
+                    return true;
+                }
+                String targetClan = args[1];
+                int amount;
+                try {
+                    amount = Integer.parseInt(args[2]);
+                } catch (NumberFormatException e) {
+                    sender.sendMessage("Invalid amount: " + args[2]);
+                    return true;
+                }
+                if (!ClanManager.isClanExisted(targetClan)) {
+                    sender.sendMessage("Clan '" + targetClan + "' does not exist.");
+                    return true;
+                }
+                IClanData clanData = PluginDataManager.getClanDatabase(targetClan);
+                clanData.setScore(Math.max(0, clanData.getScore() + amount));
+                PluginDataManager.saveClanDatabaseToStorage(targetClan, clanData);
+                sender.sendMessage("Given " + amount + " points to clan " + targetClan + ". New score: " + clanData.getScore());
+                return true;
             }
             if (args[0].equalsIgnoreCase("clanresetall")) {
                 List<String> availableTypes = new ArrayList<>();
                 availableTypes.add("score");
-                availableTypes.add("warpoint");
                 availableTypes.add("warning");
 
                 if (!availableTypes.contains(args[1])) {
@@ -614,8 +581,6 @@ public class ClanAdminCommand implements CommandExecutor, TabExecutor {
                     sender.sendMessage("Starting to reset " + args[1] + " of " + clanSize + " clans...");
                     for (String clanName : PluginDataManager.getClanDatabase().keySet()) {
                         if (args[1].equalsIgnoreCase("score")) PluginDataManager.getClanDatabase(clanName).setScore(0);
-                        if (args[1].equalsIgnoreCase("warpoint"))
-                            PluginDataManager.getClanDatabase(clanName).setWarPoint(0);
                         if (args[1].equalsIgnoreCase("warning"))
                             PluginDataManager.getClanDatabase(clanName).setWarning(0);
                     }
@@ -853,13 +818,14 @@ public class ClanAdminCommand implements CommandExecutor, TabExecutor {
         sender.sendMessage("/clanadmin transferPluginDatabaseType <type>");
         sender.sendMessage("/clanadmin backup (custom file name)");
         sender.sendMessage("/clanadmin setClanData <clan name> <type> <give/add/set/remove/reset> <value>");
-        sender.sendMessage(ChatColor.AQUA + "Types: score, warpoint, warning, createddate, customname, message, icon, spawnpoint, subjectpermission, discordchannelid, discordjoinlink, members, allies");
-        sender.sendMessage("/clanadmin setClanSkillData <clan name> <skill id> <skill level>");
+        sender.sendMessage(ChatColor.AQUA + "Types: score, warning, createddate, customname, message, icon, spawnpoint, subjectpermission, discordchannelid, discordjoinlink, members, allies");
+        sender.sendMessage("/clanadmin resetPoints");
+        sender.sendMessage("/clanadmin givePoints <clanName> <amount>");
         sender.sendMessage("/clanadmin setPlayerData <player name> <type> <set/reset> <value>");
         sender.sendMessage(ChatColor.AQUA + "Types: clanname, rank, joindate, scorecollected, lastactivated");
         sender.sendMessage("/clanadmin openClanStorage <clan name> <storage number>");
         sender.sendMessage("/clanadmin clanResetAll <type>");
-        sender.sendMessage(ChatColor.AQUA + "Types: score, warpoint, warning");
+        sender.sendMessage(ChatColor.AQUA + "Types: score, warning");
         sender.sendMessage("/clanadmin event <event> <start/end/settime> <value>");
         sender.sendMessage("/clanadmin delete <clan name>");
         sender.sendMessage("");
@@ -886,7 +852,8 @@ public class ClanAdminCommand implements CommandExecutor, TabExecutor {
             commands.add("reload");
             commands.add("transferPluginDatabaseType");
             commands.add("setClanData");
-            commands.add("setClanSkillData");
+            commands.add("resetPoints");
+            commands.add("givePoints");
             commands.add("setPlayerData");
             commands.add("openClanStorage");
             commands.add("event");
@@ -898,7 +865,7 @@ public class ClanAdminCommand implements CommandExecutor, TabExecutor {
             StringUtil.copyPartialMatches(args[0], commands, completions);
         } else if (args.length == 2) {
             // check clan info -> list all clan name
-            if (args[0].equalsIgnoreCase("setclandata") || args[0].equalsIgnoreCase("setClanSkillData") || args[0].equalsIgnoreCase("delete") || args[0].equalsIgnoreCase("openClanStorage")) {
+            if (args[0].equalsIgnoreCase("setclandata") || args[0].equalsIgnoreCase("givePoints") || args[0].equalsIgnoreCase("delete") || args[0].equalsIgnoreCase("openClanStorage")) {
                 if (!PluginDataManager.getClanDatabase().isEmpty()) {
                     commands.addAll(PluginDataManager.getClanDatabase().keySet());
                 }
@@ -909,7 +876,6 @@ public class ClanAdminCommand implements CommandExecutor, TabExecutor {
             }
             if (args[0].equalsIgnoreCase("clanresetall")) {
                 commands.add("score");
-                commands.add("warpoint");
                 commands.add("warning");
             }
             if (args[0].equalsIgnoreCase("event")) commands.add("war");
@@ -969,7 +935,7 @@ public class ClanAdminCommand implements CommandExecutor, TabExecutor {
                         commands.add("remove");
                         commands.remove("set");
                     }
-                    if (type.equalsIgnoreCase("score") || type.equalsIgnoreCase("warpoint") || type.equalsIgnoreCase("warning")) {
+                    if (type.equalsIgnoreCase("score") || type.equalsIgnoreCase("warning")) {
                         commands.add("give");
                         commands.add("remove");
                     }
@@ -1045,7 +1011,7 @@ public class ClanAdminCommand implements CommandExecutor, TabExecutor {
     }
 
     private enum ClanDataType {
-        score, warpoint, warning, createddate, customname, message, icon, spawnpoint, subjectpermission, discordchannelid, discordjoinlink, members, allies
+        score, warning, createddate, customname, message, icon, spawnpoint, subjectpermission, discordchannelid, discordjoinlink, members, allies
     }
 
     private enum PlayerDataType {

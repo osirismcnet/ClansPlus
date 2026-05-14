@@ -70,7 +70,6 @@ items:
       - '&f%message%'
       - ''
       - '&fPoints: &#d612e0%score%'
-      - '&fWar Point: &#e0122a%warPoint%'
       - '&fLeader: &#e0cf12%owner%'
       - '&fMembers: &#31e012%memberSize%&f/&#127502%maxMembers%'
       - '&fAllies: &#28c9d1%allySize%'
@@ -129,8 +128,8 @@ items:
       - '&fTotal clans: &e%totalClans%'
       - ''
       - '&eClick here to view'
-  upgrade:
-    name: '&eUpgrade'
+  upgradeMaxMember:
+    name: '&eUpgrade Max Members'
     slot: 15
     type: customhead
     value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjQ2MjhhY2U3YzNhZmM2MWE0NzZkYzE0NDg5M2FhYTY0MmJhOTc2ZDk1MmI1MWVjZTI2YWJhZmI4OTZiOCJ9fX0=
@@ -142,9 +141,13 @@ items:
       pitch: 2
     lore:
       - ''
-      - '&fUpgrade your clan''s core stats.'
+      - '&fIncrease your clan''s maximum member count.'
       - ''
-      - '&eClick here to manage'
+      - '&fCurrent members: &a%totalMembers%'
+      - '&fNext max members: &e%newMaxMembers%'
+      - '&fCost: &b%price% %currencySymbol%%currencyName%'
+      - ''
+      - '&eClick here to upgrade'
   events:
     name: '&eEvents'
     slot: 16

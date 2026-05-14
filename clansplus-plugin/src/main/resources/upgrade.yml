@@ -7,14 +7,14 @@
 #
 # A plugin made by Cortez_Romeo (Discord: https://discord.gg/NWbTVddmBM)
 #
-# currency-type includes WARPOINT, VAULT, PLAYERPOINTS
+# currency-type includes VAULT, PLAYERPOINTS
 # Please ensure the server supports Vault and PlayerPoints before configuring.
 # The 'else' line in the price block is used to return this value if the given level is not found in the list.
 
 upgrade:
   max-storages:
-    # currency-type: WARPOINT, VAULT, PLAYERPOINTS
-    currency-type: WARPOINT
+    # currency-type: VAULT, PLAYERPOINTS
+    currency-type: VAULT
     # can add more or remove
     price:
       1: 20
@@ -30,8 +30,8 @@ upgrade:
       # Do not delete this line.
       else: 100
   max-members:
-    # currency-type: WARPOINT, VAULT, PLAYERPOINTS
-    currency-type: WARPOINT
+    # currency-type: VAULT, PLAYERPOINTS
+    currency-type: VAULT
     # max member: cost
     # can be added or removed.
     price:
@@ -47,9 +47,9 @@ upgrade:
   # You can add or remove levels, but this section cannot be left empty.
   # The last level configured is the max level.
   plugin-skills:
-    # currency-type: WARPOINT, VAULT, PLAYERPOINTS
+    # currency-type: VAULT, PLAYERPOINTS
     critical_hit:
-      currency-type: WARPOINT
+      currency-type: VAULT
       # level: cost
       price:
         1: 20
@@ -88,7 +88,7 @@ upgrade:
         34: 185
         35: 190
     dodge:
-      currency-type: WARPOINT
+      currency-type: VAULT
       # level: cost
       price:
         1: 20
@@ -121,7 +121,7 @@ upgrade:
         28: 155
         29: 160
     life_steal:
-      currency-type: WARPOINT
+      currency-type: VAULT
       # level: cost
       price:
         1: 20
@@ -163,7 +163,7 @@ upgrade:
         37: 200
         38: 205
     boost_score:
-      currency-type: WARPOINT
+      currency-type: VAULT
       # level: cost
       price:
         1: 20

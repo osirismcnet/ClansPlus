@@ -38,7 +38,6 @@ You might need these plugins to utilize my plugin resources totally.
         - **%clanplus_clan_owner%** - Get clan owner
         - **%clanplus_clan_message%** - Get clan message
         - **%clanplus_clan_score%** - Get clan score
-        - **%clanplus_clan_warpoint%** - Get clan warpoint
         - **%clanplus_clan_warning%** - Get clan warning
         - **%clanplus_clan_maxmembers%** - Get clan max members
         - **%clanplus_clan_createddate%** - Get clan created date as milliseconds

@@ -77,7 +77,6 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
         if (s.equalsIgnoreCase("clan_message"))
             return Settings.SOFT_DEPEND_PLACEHOLDERAPI_CLAN_MESSAGE.replace("%value%", clanData.getMessage() != null ? ClansPlus.nms.addColor(clanData.getMessage()) : "");
         if (s.equalsIgnoreCase("clan_score")) return Settings.SOFT_DEPEND_PLACEHOLDERAPI_CLAN_SCORE.replace("%value%", String.valueOf(clanData.getScore()));
-        if (s.equalsIgnoreCase("clan_warpoint")) return Settings.SOFT_DEPEND_PLACEHOLDERAPI_CLAN_WARPONT.replace("%value%", String.valueOf(clanData.getWarPoint()));
         if (s.equalsIgnoreCase("clan_warning")) return Settings.SOFT_DEPEND_PLACEHOLDERAPI_CLAN_WARNING.replace("%value%", String.valueOf(clanData.getWarning()));
         if (s.equalsIgnoreCase("clan_maxmembers")) return Settings.SOFT_DEPEND_PLACEHOLDERAPI_CLAN_MAXMEMBERS.replace("%value%", String.valueOf(clanData.getMaxMembers()));
         if (s.equalsIgnoreCase("clan_createddate")) return Settings.SOFT_DEPEND_PLACEHOLDERAPI_CLAN_CREATEDDATE.replace("%value%", String.valueOf(clanData.getCreatedDate()));
@@ -87,12 +86,7 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
         if (s.equalsIgnoreCase("clan_allies"))
             return Settings.SOFT_DEPEND_PLACEHOLDERAPI_CLAN_ALLIES.replace("%value%", !clanData.getAllies().isEmpty() ? String.valueOf(clanData.getAllies()) : "");
         if (s.startsWith("clan_skilllevel_")) {
-            String skillID = s.replace("clan_skilllevel_", "");
-            try {
-                return Settings.SOFT_DEPEND_PLACEHOLDERAPI_CLAN_SKILLLEVEL_.replace("%value%", String.valueOf(clanData.getSkillLevel().getOrDefault(Integer.parseInt(skillID), 0)));
-            } catch (Exception exception) {
-                exception.printStackTrace();
-            }
+            return Settings.SOFT_DEPEND_PLACEHOLDERAPI_CLAN_SKILLLEVEL_.replace("%value%", "0");
         }
         if (s.startsWith("clan_subjectpermission_")) {
             String subject = s.replace("clan_subjectpermission_", "");

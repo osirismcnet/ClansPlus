@@ -107,7 +107,6 @@ items:
       - '&f%message%'
       - ''
       - '&fPoints: &#d612e0%score%'
-      - '&fWar Point: &#e0122a%warPoint%'
       - '&fLeader: &#e0cf12%owner%'
       - '&fMembers: &#31e012%memberSize%&f/&#127502%maxMembers%'
       - '&fAllies: &#28c9d1%allySize%'

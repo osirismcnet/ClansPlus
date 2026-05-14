@@ -144,11 +144,6 @@ public class API implements com.cortezromeo.clansplus.api.ClanPlus {
         }
 
         @Override
-        public HashMap<String, Long> getClansWarpointHashMap() {
-            return ClanManager.getClansWarpointHashMap();
-        }
-
-        @Override
         public HashMap<String, Long> getClansCreatedDate() {
             return ClanManager.getClansCreatedDate();
         }

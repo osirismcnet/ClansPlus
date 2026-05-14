@@ -87,21 +87,17 @@ public class Create extends SubjectManager {
         members.add(playerName);
         List<String> allies = new ArrayList<>();
         List<String> allyInvitation = new ArrayList<>();
-        HashMap<Integer, Integer> skillLevel = new HashMap<>();
         HashMap<Subject, Rank> permissionDefault = new HashMap<>();
         HashMap<Integer, Inventory> inventory = new HashMap<>();
         for (Subject subject : Subject.values())
             permissionDefault.put(subject, Settings.CLAN_SETTING_PERMISSION_DEFAULT.get(subject));
-        if (!Settings.CLAN_SETTING_SKILL_DEFAULT.isEmpty())
-            skillLevel = Settings.CLAN_SETTING_SKILL_DEFAULT;
 
         ClanData clanData = new ClanData(
                 clanName,
                 null,
                 player.getName(),
                 null,
-                0,
-                0,
+                Settings.CLAN_SETTING_INITIAL_SCORE,
                 0,
                 Settings.CLAN_SETTING_MAXIMUM_MEMBER_DEFAULT,
                 dateLong,
@@ -110,7 +106,6 @@ public class Create extends SubjectManager {
                 members,
                 null,
                 allies,
-                skillLevel,
                 permissionDefault,
                 allyInvitation,
                 0,

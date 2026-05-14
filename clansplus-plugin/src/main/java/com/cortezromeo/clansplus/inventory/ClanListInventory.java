@@ -58,6 +58,7 @@ public class ClanListInventory extends PaginatedInventory {
             return false;
 
         ItemStack itemStack = event.getCurrentItem();
+        if (itemStack == null || itemStack.getType() == org.bukkit.Material.AIR) return true;
         String itemCustomData = ClansPlus.nms.getCustomData(itemStack);
 
         playClickSound(fileConfiguration, itemCustomData);
@@ -82,8 +83,6 @@ public class ClanListInventory extends PaginatedInventory {
             new ClanMenuInventory(getOwner()).open();
         if (itemCustomData.equals("sort")) {
             if (sortItemType == SortItemType.HIGHESTSCORE)
-                sortItemType = SortItemType.HIGHESTWARPOINT;
-            else if (sortItemType == SortItemType.HIGHESTWARPOINT)
                 sortItemType = SortItemType.HIGHESTPLAYERSIZE;
             else if (sortItemType == SortItemType.HIGHESTPLAYERSIZE)
                 sortItemType = SortItemType.OLDEST;
@@ -110,35 +109,39 @@ public class ClanListInventory extends PaginatedInventory {
 
             addPaginatedMenuItems(fileConfiguration, true);
 
-            ItemStack clanListInfoItem = ClansPlus.nms.addCustomData(
-                    getClanInfoItemStack(ItemUtil.getItem(
-                            ItemType.valueOf(fileConfiguration.getString("items.clanListInfo.type").toUpperCase()),
-                            fileConfiguration.getString("items.clanListInfo.value"),
-                            fileConfiguration.getInt("items.clanListInfo.customModelData"),
-                            fileConfiguration.getString("items.clanListInfo.name"),
-                            fileConfiguration.getStringList("items.clanListInfo.lore")
-                            , false)), "clanListInfoItem");
-            int clanListInfoSlot = fileConfiguration.getInt("items.clanListInfo.slot");
-            if (clanListInfoSlot < 0)
-                clanListInfoSlot = 0;
-            if (clanListInfoSlot > 8)
-                clanListInfoSlot = 8;
-            clanListInfoSlot = (getSlots() - 9) + clanListInfoSlot;
-            inventory.setItem(clanListInfoSlot, clanListInfoItem);
+            if (fileConfiguration.getBoolean("items.clanListInfo.enabled", true)) {
+                ItemStack clanListInfoItem = ClansPlus.nms.addCustomData(
+                        getClanInfoItemStack(ItemUtil.getItem(
+                                ItemType.valueOf(fileConfiguration.getString("items.clanListInfo.type").toUpperCase()),
+                                fileConfiguration.getString("items.clanListInfo.value"),
+                                fileConfiguration.getInt("items.clanListInfo.customModelData"),
+                                fileConfiguration.getString("items.clanListInfo.name"),
+                                fileConfiguration.getStringList("items.clanListInfo.lore")
+                                , false)), "clanListInfoItem");
+                int clanListInfoSlot = fileConfiguration.getInt("items.clanListInfo.slot");
+                if (clanListInfoSlot < 0)
+                    clanListInfoSlot = 0;
+                if (clanListInfoSlot > 8)
+                    clanListInfoSlot = 8;
+                clanListInfoSlot = (getSlots() - 9) + clanListInfoSlot;
+                inventory.setItem(clanListInfoSlot, clanListInfoItem);
+            }
 
-            ItemStack sortItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
-                    ItemType.valueOf(fileConfiguration.getString("items.sort.type").toUpperCase()),
-                    fileConfiguration.getString("items.sort.value"),
-                    fileConfiguration.getInt("items.sort.customModelData"),
-                    fileConfiguration.getString("items.sort.name"),
-                    fileConfiguration.getStringList("items.sort.lore." + sortItemType.toString()), false), "sort");
-            int sortItemSlot = fileConfiguration.getInt("items.sort.slot");
-            if (sortItemSlot < 0)
-                sortItemSlot = 0;
-            if (sortItemSlot > 8)
-                sortItemSlot = 8;
-            sortItemSlot = (getSlots() - 9) + sortItemSlot;
-            inventory.setItem(sortItemSlot, sortItem);
+            if (fileConfiguration.getBoolean("items.sort.enabled", true)) {
+                ItemStack sortItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
+                        ItemType.valueOf(fileConfiguration.getString("items.sort.type").toUpperCase()),
+                        fileConfiguration.getString("items.sort.value"),
+                        fileConfiguration.getInt("items.sort.customModelData"),
+                        fileConfiguration.getString("items.sort.name"),
+                        fileConfiguration.getStringList("items.sort.lore." + sortItemType.toString()), false), "sort");
+                int sortItemSlot = fileConfiguration.getInt("items.sort.slot");
+                if (sortItemSlot < 0)
+                    sortItemSlot = 0;
+                if (sortItemSlot > 8)
+                    sortItemSlot = 8;
+                sortItemSlot = (getSlots() - 9) + sortItemSlot;
+                inventory.setItem(sortItemSlot, sortItem);
+            }
 
             if (PluginDataManager.getClanDatabase().isEmpty())
                 return;
@@ -147,8 +150,6 @@ public class ClanListInventory extends PaginatedInventory {
 
             if (sortItemType == SortItemType.HIGHESTSCORE)
                 clans = HashMapUtil.sortFromGreatestToLowestI(ClanManager.getClansScoreHashMap());
-            if (sortItemType == SortItemType.HIGHESTWARPOINT)
-                clans = HashMapUtil.sortFromGreatestToLowestL(ClanManager.getClansWarpointHashMap());
             if (sortItemType == SortItemType.HIGHESTPLAYERSIZE)
                 clans = HashMapUtil.sortFromGreatestToLowestI(ClanManager.getClansPlayerSize());
             if (sortItemType == SortItemType.OLDEST)
@@ -194,25 +195,18 @@ public class ClanListInventory extends PaginatedInventory {
         String NAString = "N/A";
         String bestScoreClanName;
         int bestScoreClanValue;
-        String bestWarPointClanName;
-        long bestWarPointClanValue;
         String oldestClanName;
         String oldestClanValue;
         if (!PluginDataManager.getClanDatabase().isEmpty()) {
             IClanData bestScoreClan = PluginDataManager.getClanDatabase(HashMapUtil.sortFromGreatestToLowestI(ClanManager.getClansScoreHashMap()).get(0));
-            IClanData bestWarPointClan = PluginDataManager.getClanDatabase(HashMapUtil.sortFromGreatestToLowestL(ClanManager.getClansWarpointHashMap()).get(0));
             IClanData oldestClan = PluginDataManager.getClanDatabase(HashMapUtil.sortFromLowestToGreatestL(ClanManager.getClansCreatedDate()).get(0));
             bestScoreClanName = ClanManager.getFormatClanName(bestScoreClan);
-            bestWarPointClanName = ClanManager.getFormatClanName(bestWarPointClan);
             oldestClanName = ClanManager.getFormatClanName(oldestClan);
             bestScoreClanValue = bestScoreClan.getScore();
-            bestWarPointClanValue = bestWarPointClan.getWarPoint();
             oldestClanValue = StringUtil.dateTimeToDateFormat(oldestClan.getCreatedDate());
         } else {
-            bestWarPointClanValue = 0;
             bestScoreClanValue = 0;
             bestScoreClanName = NAString;
-            bestWarPointClanName = NAString;
             oldestClanName = NAString;
             oldestClanValue = NAString;
         }
@@ -222,8 +216,6 @@ public class ClanListInventory extends PaginatedInventory {
                 .replace("%totalPlayers%", String.valueOf(PluginDataManager.getPlayerDatabase().size()))
                 .replace("%bestScoreClan%", bestScoreClanName)
                 .replace("%bestScoreClanValue%", String.valueOf(bestScoreClanValue))
-                .replace("%bestWarPointClan%", bestWarPointClanName)
-                .replace("%bestWarPointClanValue%", String.valueOf(bestWarPointClanValue))
                 .replace("%oldestClan%", oldestClanName)
                 .replace("%oldestClanValue%", oldestClanValue)));
         itemMeta.setLore(itemLore);
@@ -232,7 +224,7 @@ public class ClanListInventory extends PaginatedInventory {
     }
 
     public enum SortItemType {
-        HIGHESTSCORE, HIGHESTWARPOINT, HIGHESTPLAYERSIZE, OLDEST
+        HIGHESTSCORE, HIGHESTPLAYERSIZE, OLDEST
     }
 
 }

@@ -95,15 +95,6 @@ public class ClanManager {
         return clansPlayerSize;
     }
 
-    public static HashMap<String, Long> getClansWarpointHashMap() {
-        if (PluginDataManager.getClanDatabase().isEmpty()) return null;
-
-        HashMap<String, Long> clansWarPoint = new HashMap<>();
-        for (String clanName : PluginDataManager.getClanDatabase().keySet())
-            clansWarPoint.put(clanName, PluginDataManager.getClanDatabase(clanName).getWarPoint());
-        return clansWarPoint;
-    }
-
     public static HashMap<String, Long> getClansCreatedDate() {
         if (PluginDataManager.getClanDatabase().isEmpty()) return null;
 
