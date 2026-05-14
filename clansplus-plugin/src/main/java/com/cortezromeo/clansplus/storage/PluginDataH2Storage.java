@@ -110,6 +110,7 @@ public class PluginDataH2Storage implements PluginStorage {
                     " SCORECOLLECTED LONG, " +
                     " LASTACTIVATED LONG, " +
                     " POINTSLOST LONG DEFAULT 0, " +
+                    " POINTSGAINED LONG DEFAULT 0, " +
                     " PRIMARY KEY (PLAYERNAME))";
             statement.executeUpdate(sql);
             MessageUtil.debug("LOADING DATABASE (H2)", "Connected to clan table: " + clanTable);
@@ -118,6 +119,12 @@ public class PluginDataH2Storage implements PluginStorage {
             // migration: add POINTSLOST column for existing databases
             try {
                 statement.execute("ALTER TABLE " + playerTable + " ADD COLUMN IF NOT EXISTS POINTSLOST LONG DEFAULT 0");
+            } catch (SQLException e) {
+                // ignore if already exists
+            }
+            // migration: add POINTSGAINED column for existing databases
+            try {
+                statement.execute("ALTER TABLE " + playerTable + " ADD COLUMN IF NOT EXISTS POINTSGAINED LONG DEFAULT 0");
             } catch (SQLException e) {
                 // ignore if already exists
             }
@@ -201,8 +208,8 @@ public class PluginDataH2Storage implements PluginStorage {
 
     private static void initPlayerData(String playerName) {
         String sql = "INSERT INTO " + playerTable + " (" +
-                "PLAYERNAME, UUID, CLAN, RANK, JOINDATE, SCORECOLLECTED, LASTACTIVATED, POINTSLOST) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                "PLAYERNAME, UUID, CLAN, RANK, JOINDATE, SCORECOLLECTED, LASTACTIVATED, POINTSLOST, POINTSGAINED) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, playerName);    // PLAYERNAME
             preparedStatement.setString(2, "");         // UUID
@@ -212,6 +219,7 @@ public class PluginDataH2Storage implements PluginStorage {
             preparedStatement.setLong(6, 0);            // SCORECOLLECTED
             preparedStatement.setLong(7, 0);            // LASTACTIVATED
             preparedStatement.setLong(8, 0);            // POINTSLOST
+            preparedStatement.setLong(9, 0);            // POINTSGAINED
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -490,6 +498,7 @@ public class PluginDataH2Storage implements PluginStorage {
                 playerData.setScoreCollected(resultSet.getLong("SCORECOLLECTED"));
                 playerData.setLastActivated(resultSet.getLong("LASTACTIVATED"));
                 playerData.setPointsLost(resultSet.getLong("POINTSLOST"));
+                playerData.setPointsGained(resultSet.getLong("POINTSGAINED"));
             }
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -510,7 +519,8 @@ public class PluginDataH2Storage implements PluginStorage {
                 + " JOINDATE = ?,"
                 + " SCORECOLLECTED = ?,"
                 + " LASTACTIVATED = ?,"
-                + " POINTSLOST = ?"
+                + " POINTSLOST = ?,"
+                + " POINTSGAINED = ?"
                 + " WHERE PLAYERNAME = ?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -525,7 +535,8 @@ public class PluginDataH2Storage implements PluginStorage {
             preparedStatement.setLong(6, playerData.getScoreCollected());
             preparedStatement.setLong(7, playerData.getLastActivated());
             preparedStatement.setLong(8, playerData.getPointsLost());
-            preparedStatement.setString(9, playerName);
+            preparedStatement.setLong(9, playerData.getPointsGained());
+            preparedStatement.setString(10, playerName);
             preparedStatement.execute();
         } catch (Exception exception) {
             exception.printStackTrace();

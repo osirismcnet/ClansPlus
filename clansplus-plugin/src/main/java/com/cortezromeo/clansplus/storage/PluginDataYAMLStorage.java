@@ -300,6 +300,7 @@ public class PluginDataYAMLStorage implements PluginStorage {
             playerData.setScoreCollected(storage.getInt("data.score-collected"));
             playerData.setLastActivated(storage.getLong("data.last-activated"));
             playerData.setPointsLost(storage.getLong("data.points-lost"));
+            playerData.setPointsGained(storage.getLong("data.points-gained"));
             try {
                 playerData.setRank(Rank.valueOf(storage.getString("data.rank").toUpperCase()));
             } catch (Exception exception) {
@@ -323,6 +324,7 @@ public class PluginDataYAMLStorage implements PluginStorage {
         storage.set("data.score-collected", playerData.getScoreCollected());
         storage.set("data.last-activated", playerData.getLastActivated());
         storage.set("data.points-lost", playerData.getPointsLost());
+        storage.set("data.points-gained", playerData.getPointsGained());
 
         try {
             storage.save(file);
