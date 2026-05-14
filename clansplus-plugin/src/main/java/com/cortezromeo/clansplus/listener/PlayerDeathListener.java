@@ -63,6 +63,13 @@ public class PlayerDeathListener implements Listener {
 
         killerClanData.setScore(killerClanData.getScore() + 1);
         PluginDataManager.saveClanDatabaseToStorage(killerClanData.getName(), killerClanData);
+
+        // Track pointsGained for the killer player
+        IPlayerData killerPlayerData = PluginDataManager.getPlayerDatabase(killer.getName());
+        if (killerPlayerData != null) {
+            killerPlayerData.setPointsGained(killerPlayerData.getPointsGained() + 1);
+            PluginDataManager.savePlayerDatabaseToStorage(killer.getName(), killerPlayerData);
+        }
     }
 
 }
