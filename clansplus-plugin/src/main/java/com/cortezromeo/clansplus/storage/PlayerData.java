@@ -13,6 +13,7 @@ public class PlayerData implements IPlayerData {
     long scoreCollected;
     long lastActivated;
     long pointsLost;
+    long pointsGained;
 
     public PlayerData(String playerName, String UUID, String clan, Rank rank, long joinDate, long scoreCollected, long lastActivated) {
         this.playerName = playerName;
@@ -23,6 +24,7 @@ public class PlayerData implements IPlayerData {
         this.scoreCollected = scoreCollected;
         this.lastActivated = lastActivated;
         this.pointsLost = 0;
+        this.pointsGained = 0;
     }
 
     @Override
@@ -103,5 +105,15 @@ public class PlayerData implements IPlayerData {
     @Override
     public void setPointsLost(long pointsLost) {
         this.pointsLost = pointsLost;
+    }
+
+    @Override
+    public long getPointsGained() {
+        return pointsGained;
+    }
+
+    @Override
+    public void setPointsGained(long pointsGained) {
+        this.pointsGained = pointsGained;
     }
 }

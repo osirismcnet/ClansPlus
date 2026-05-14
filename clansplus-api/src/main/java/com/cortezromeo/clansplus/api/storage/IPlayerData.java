@@ -36,4 +36,8 @@ public interface IPlayerData {
 
     void setPointsLost(long pointsLost);
 
+    long getPointsGained();
+
+    void setPointsGained(long pointsGained);
+
 }
