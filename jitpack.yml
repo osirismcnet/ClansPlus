@@ -5,4 +5,4 @@ before_install:
   - sdk use java 16.0.2-open
   - sdk install maven
 install:
-  - mvn install -DskipTests
+  - mvn install -DskipTests -pl clansplus-api -am
