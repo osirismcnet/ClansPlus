@@ -115,6 +115,8 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
         if (s.equalsIgnoreCase("player_format_joindate"))
             return Settings.SOFT_DEPEND_PLACEHOLDERAPI_PLAYER_FORMAT_JOINDATE.replace("%value%", StringUtil.dateTimeToDateFormat(playerData.getJoinDate()));
         if (s.equalsIgnoreCase("player_scorecollected")) return Settings.SOFT_DEPEND_PLACEHOLDERAPI_PLAYER_SCORECOLLECTED.replace("%value%", String.valueOf(playerData.getScoreCollected()));
+        if (s.equalsIgnoreCase("player_pointsgained")) return Settings.SOFT_DEPEND_PLACEHOLDERAPI_PLAYER_POINTSGAINED.replace("%value%", String.valueOf(playerData.getPointsGained()));
+        if (s.equalsIgnoreCase("player_pointslost")) return Settings.SOFT_DEPEND_PLACEHOLDERAPI_PLAYER_POINTSLOST.replace("%value%", String.valueOf(playerData.getPointsLost()));
         if (s.equalsIgnoreCase("player_lastactivated")) return Settings.SOFT_DEPEND_PLACEHOLDERAPI_PLAYER_LASTACTIVATED.replace("%value%", String.valueOf(playerData.getLastActivated()));
         if (s.equalsIgnoreCase("player_format_lastactivated"))
             return Settings.SOFT_DEPEND_PLACEHOLDERAPI_PLAYER_FORMAT_LASTACTIVATED.replace("%value%", StringUtil.dateTimeToDateFormat(playerData.getLastActivated()));

@@ -87,6 +87,8 @@ public class Settings {
     public static String SOFT_DEPEND_PLACEHOLDERAPI_PLAYER_JOINDATE;
     public static String SOFT_DEPEND_PLACEHOLDERAPI_PLAYER_FORMAT_JOINDATE;
     public static String SOFT_DEPEND_PLACEHOLDERAPI_PLAYER_SCORECOLLECTED;
+    public static String SOFT_DEPEND_PLACEHOLDERAPI_PLAYER_POINTSGAINED;
+    public static String SOFT_DEPEND_PLACEHOLDERAPI_PLAYER_POINTSLOST;
     public static String SOFT_DEPEND_PLACEHOLDERAPI_PLAYER_LASTACTIVATED;
     public static String SOFT_DEPEND_PLACEHOLDERAPI_PLAYER_FORMAT_LASTACTIVATED;
     public static String SOFT_DEPEND_PLACEHOLDERAPI_TOP_SCORE_NAME_;
@@ -177,6 +179,8 @@ public class Settings {
         SOFT_DEPEND_PLACEHOLDERAPI_PLAYER_JOINDATE = configuration.getString("soft-depends.placeholderapi.placeholders.player_joindate");
         SOFT_DEPEND_PLACEHOLDERAPI_PLAYER_FORMAT_JOINDATE = configuration.getString("soft-depends.placeholderapi.placeholders.player_format_joindate");
         SOFT_DEPEND_PLACEHOLDERAPI_PLAYER_SCORECOLLECTED = configuration.getString("soft-depends.placeholderapi.placeholders.player_scorecollected");
+        SOFT_DEPEND_PLACEHOLDERAPI_PLAYER_POINTSGAINED = configuration.getString("soft-depends.placeholderapi.placeholders.player_pointsgained");
+        SOFT_DEPEND_PLACEHOLDERAPI_PLAYER_POINTSLOST = configuration.getString("soft-depends.placeholderapi.placeholders.player_pointslost");
         SOFT_DEPEND_PLACEHOLDERAPI_PLAYER_LASTACTIVATED = configuration.getString("soft-depends.placeholderapi.placeholders.player_lastactivated");
         SOFT_DEPEND_PLACEHOLDERAPI_PLAYER_FORMAT_LASTACTIVATED = configuration.getString("soft-depends.placeholderapi.placeholders.player_format_lastactivated");
         SOFT_DEPEND_PLACEHOLDERAPI_TOP_SCORE_NAME_ = configuration.getString("soft-depends.placeholderapi.placeholders.top_score_name_");

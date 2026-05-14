@@ -258,6 +258,8 @@ soft-depends:
       player_joindate: '%value%'
       player_format_joindate: '%value%'
       player_scorecollected: '%value%'
+      player_pointsgained: '%value%'
+      player_pointslost: '%value%'
       player_lastactivated: '%value%'
       player_format_lastactivated: '%value%'
       # Top placeholders
