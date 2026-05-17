@@ -39,6 +39,7 @@ items:
     lore:
       - ''
   close:
+    enabled: true
     name: '&cClose'
     slot: 31
     type: customhead
@@ -47,6 +48,7 @@ items:
     lore:
       - '&eClick here to close'
   back:
+    enabled: true
     name: '&eGo Back'
     slot: 30
     type: customhead
@@ -60,6 +62,7 @@ items:
     lore:
       - '&eClick here to go back'
   material:
+    enabled: true
     name: '&eMATERIAL'
     slot: 11
     type: material
@@ -77,6 +80,7 @@ items:
       - ''
       - '&eClick here to customize'
   customHead:
+    enabled: true
     name: '&eCUSTOM HEAD'
     slot: 15
     type: customhead

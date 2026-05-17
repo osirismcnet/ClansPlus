@@ -97,30 +97,34 @@ public class ManageAllyInventory extends ClanPlusInventoryBase {
 
             IClanData allyClanData = PluginDataManager.getClanDatabase(allyName);
 
-            ItemStack allyClanItem = ItemUtil.getClanItemStack(ItemUtil.getItem(
-                    allyClanData.getIconType(),
-                    allyClanData.getIconValue(),
-                    0,
-                    fileConfiguration.getString("items.clan.name"),
-                    fileConfiguration.getStringList("items.clan.lore"), false), allyClanData);
-            int allyClanItemSlot = fileConfiguration.getInt("items.clan.slot");
-            inventory.setItem(allyClanItemSlot, allyClanItem);
-
-            List<String> removeAllyItemLore = new ArrayList<>();
-            Rank removeAllyRequiredRank = PluginDataManager.getClanDatabaseByPlayerName(getOwner().getName()).getSubjectPermission().get(Subject.MANAGEALLY);
-            for (String lore : fileConfiguration.getStringList("items.removeAlly.lore")) {
-                lore = lore.replace("%checkPermission%", ClanManager.isPlayerRankSatisfied(getOwner().getName(), removeAllyRequiredRank) ? fileConfiguration.getString("items.removeAlly.placeholders.checkPermission.true")
-                        : fileConfiguration.getString("items.removeAlly.placeholders.checkPermission.false").replace("%getRequiredRank%", ClanManager.getFormatRank(removeAllyRequiredRank)));
-                removeAllyItemLore.add(lore);
+            if (fileConfiguration.getBoolean("items.clan.enabled", true)) {
+                ItemStack allyClanItem = ItemUtil.getClanItemStack(ItemUtil.getItem(
+                        allyClanData.getIconType(),
+                        allyClanData.getIconValue(),
+                        0,
+                        fileConfiguration.getString("items.clan.name"),
+                        fileConfiguration.getStringList("items.clan.lore"), false), allyClanData);
+                int allyClanItemSlot = fileConfiguration.getInt("items.clan.slot");
+                inventory.setItem(allyClanItemSlot, allyClanItem);
             }
-            ItemStack removeAllyItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
-                    ItemType.valueOf(fileConfiguration.getString("items.removeAlly.type").toUpperCase()),
-                    fileConfiguration.getString("items.removeAlly.value"),
-                    fileConfiguration.getInt("items.removeAlly.customModelData"),
-                    fileConfiguration.getString("items.removeAlly.name"),
-                    removeAllyItemLore, false), "remove=" + allyName);
-            int removeAllyItemSlot = fileConfiguration.getInt("items.removeAlly.slot");
-            inventory.setItem(removeAllyItemSlot, removeAllyItem);
+
+            if (fileConfiguration.getBoolean("items.removeAlly.enabled", true)) {
+                List<String> removeAllyItemLore = new ArrayList<>();
+                Rank removeAllyRequiredRank = PluginDataManager.getClanDatabaseByPlayerName(getOwner().getName()).getSubjectPermission().get(Subject.MANAGEALLY);
+                for (String lore : fileConfiguration.getStringList("items.removeAlly.lore")) {
+                    lore = lore.replace("%checkPermission%", ClanManager.isPlayerRankSatisfied(getOwner().getName(), removeAllyRequiredRank) ? fileConfiguration.getString("items.removeAlly.placeholders.checkPermission.true")
+                            : fileConfiguration.getString("items.removeAlly.placeholders.checkPermission.false").replace("%getRequiredRank%", ClanManager.getFormatRank(removeAllyRequiredRank)));
+                    removeAllyItemLore.add(lore);
+                }
+                ItemStack removeAllyItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
+                        ItemType.valueOf(fileConfiguration.getString("items.removeAlly.type").toUpperCase()),
+                        fileConfiguration.getString("items.removeAlly.value"),
+                        fileConfiguration.getInt("items.removeAlly.customModelData"),
+                        fileConfiguration.getString("items.removeAlly.name"),
+                        removeAllyItemLore, false), "remove=" + allyName);
+                int removeAllyItemSlot = fileConfiguration.getInt("items.removeAlly.slot");
+                inventory.setItem(removeAllyItemSlot, removeAllyItem);
+            }
         });
     }
 }

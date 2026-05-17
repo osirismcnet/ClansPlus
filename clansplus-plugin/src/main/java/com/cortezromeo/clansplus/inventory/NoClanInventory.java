@@ -75,28 +75,32 @@ public class NoClanInventory extends ClanPlusInventoryBase {
 
             addBasicButton(fileConfiguration, false);
 
-            ItemStack createNewClanItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
-                    ItemType.valueOf(fileConfiguration.getString("items.createNewClan.type").toUpperCase()),
-                    fileConfiguration.getString("items.createNewClan.value"),
-                    fileConfiguration.getInt("items.createNewClan.customModelData"),
-                    fileConfiguration.getString("items.createNewClan.name"),
-                    fileConfiguration.getStringList("items.createNewClan.lore"), false), "createNewClan");
-            int createNewClanItemSlot = fileConfiguration.getInt("items.createNewClan.slot");
-            inventory.setItem(createNewClanItemSlot, createNewClanItem);
-
-            List<String> listClanItemLore = new ArrayList<>();
-            for (String lore : fileConfiguration.getStringList("items.clanList.lore")) {
-                lore = lore.replace("%totalClans%", String.valueOf(PluginDataManager.getClanDatabase().size()));
-                listClanItemLore.add(lore);
+            if (fileConfiguration.getBoolean("items.createNewClan.enabled", true)) {
+                ItemStack createNewClanItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
+                        ItemType.valueOf(fileConfiguration.getString("items.createNewClan.type").toUpperCase()),
+                        fileConfiguration.getString("items.createNewClan.value"),
+                        fileConfiguration.getInt("items.createNewClan.customModelData"),
+                        fileConfiguration.getString("items.createNewClan.name"),
+                        fileConfiguration.getStringList("items.createNewClan.lore"), false), "createNewClan");
+                int createNewClanItemSlot = fileConfiguration.getInt("items.createNewClan.slot");
+                inventory.setItem(createNewClanItemSlot, createNewClanItem);
             }
-            ItemStack listClanItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
-                    ItemType.valueOf(fileConfiguration.getString("items.clanList.type").toUpperCase()),
-                    fileConfiguration.getString("items.clanList.value"),
-                    fileConfiguration.getInt("items.clanList.customModelData"),
-                    fileConfiguration.getString("items.clanList.name"),
-                    listClanItemLore, false), "clanList");
-            int listClanItemSlot = fileConfiguration.getInt("items.clanList.slot");
-            inventory.setItem(listClanItemSlot, listClanItem);
+
+            if (fileConfiguration.getBoolean("items.clanList.enabled", true)) {
+                List<String> listClanItemLore = new ArrayList<>();
+                for (String lore : fileConfiguration.getStringList("items.clanList.lore")) {
+                    lore = lore.replace("%totalClans%", String.valueOf(PluginDataManager.getClanDatabase().size()));
+                    listClanItemLore.add(lore);
+                }
+                ItemStack listClanItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
+                        ItemType.valueOf(fileConfiguration.getString("items.clanList.type").toUpperCase()),
+                        fileConfiguration.getString("items.clanList.value"),
+                        fileConfiguration.getInt("items.clanList.customModelData"),
+                        fileConfiguration.getString("items.clanList.name"),
+                        listClanItemLore, false), "clanList");
+                int listClanItemSlot = fileConfiguration.getInt("items.clanList.slot");
+                inventory.setItem(listClanItemSlot, listClanItem);
+            }
         });
     }
 

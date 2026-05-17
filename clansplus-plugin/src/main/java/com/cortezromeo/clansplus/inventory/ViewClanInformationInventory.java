@@ -74,42 +74,48 @@ public class ViewClanInformationInventory extends ClanPlusInventoryBase {
 
             IClanData clanData = PluginDataManager.getClanDatabase(clanName);
 
-            ItemStack clanItem = ItemUtil.getClanItemStack(ItemUtil.getItem(
-                    clanData.getIconType(),
-                    clanData.getIconValue(),
-                    0,
-                    fileConfiguration.getString("items.clan.name"),
-                    fileConfiguration.getStringList("items.clan.lore"), false), clanData);
-            int clanItemSlot = fileConfiguration.getInt("items.clan.slot");
-            inventory.setItem(clanItemSlot, clanItem);
-
-            List<String> membersItemLore = new ArrayList<>();
-            for (String lore : fileConfiguration.getStringList("items.members.lore")) {
-                lore = lore.replace("%totalMembers%", String.valueOf(clanData.getMembers().size()));
-                membersItemLore.add(lore);
+            if (fileConfiguration.getBoolean("items.clan.enabled", true)) {
+                ItemStack clanItem = ItemUtil.getClanItemStack(ItemUtil.getItem(
+                        clanData.getIconType(),
+                        clanData.getIconValue(),
+                        0,
+                        fileConfiguration.getString("items.clan.name"),
+                        fileConfiguration.getStringList("items.clan.lore"), false), clanData);
+                int clanItemSlot = fileConfiguration.getInt("items.clan.slot");
+                inventory.setItem(clanItemSlot, clanItem);
             }
-            ItemStack membersClanItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
-                    ItemType.valueOf(fileConfiguration.getString("items.members.type").toUpperCase()),
-                    fileConfiguration.getString("items.members.value"),
-                    fileConfiguration.getInt("items.members.customModelData"),
-                    fileConfiguration.getString("items.members.name"),
-                    membersItemLore, false), "members");
-            int membersItemSlot = fileConfiguration.getInt("items.members.slot");
-            inventory.setItem(membersItemSlot, membersClanItem);
 
-            List<String> alliesItemLore = new ArrayList<>();
-            for (String lore : fileConfiguration.getStringList("items.allies.lore")) {
-                lore = lore.replace("%totalAllies%", String.valueOf(clanData.getAllies().size()));
-                alliesItemLore.add(lore);
+            if (fileConfiguration.getBoolean("items.members.enabled", true)) {
+                List<String> membersItemLore = new ArrayList<>();
+                for (String lore : fileConfiguration.getStringList("items.members.lore")) {
+                    lore = lore.replace("%totalMembers%", String.valueOf(clanData.getMembers().size()));
+                    membersItemLore.add(lore);
+                }
+                ItemStack membersClanItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
+                        ItemType.valueOf(fileConfiguration.getString("items.members.type").toUpperCase()),
+                        fileConfiguration.getString("items.members.value"),
+                        fileConfiguration.getInt("items.members.customModelData"),
+                        fileConfiguration.getString("items.members.name"),
+                        membersItemLore, false), "members");
+                int membersItemSlot = fileConfiguration.getInt("items.members.slot");
+                inventory.setItem(membersItemSlot, membersClanItem);
             }
-            ItemStack alliesClanItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
-                    ItemType.valueOf(fileConfiguration.getString("items.allies.type").toUpperCase()),
-                    fileConfiguration.getString("items.allies.value"),
-                    fileConfiguration.getInt("items.allies.customModelData"),
-                    fileConfiguration.getString("items.allies.name"),
-                    alliesItemLore, false), "allies");
-            int alliesItemSlot = fileConfiguration.getInt("items.allies.slot");
-            inventory.setItem(alliesItemSlot, alliesClanItem);
+
+            if (fileConfiguration.getBoolean("items.allies.enabled", true)) {
+                List<String> alliesItemLore = new ArrayList<>();
+                for (String lore : fileConfiguration.getStringList("items.allies.lore")) {
+                    lore = lore.replace("%totalAllies%", String.valueOf(clanData.getAllies().size()));
+                    alliesItemLore.add(lore);
+                }
+                ItemStack alliesClanItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
+                        ItemType.valueOf(fileConfiguration.getString("items.allies.type").toUpperCase()),
+                        fileConfiguration.getString("items.allies.value"),
+                        fileConfiguration.getInt("items.allies.customModelData"),
+                        fileConfiguration.getString("items.allies.name"),
+                        alliesItemLore, false), "allies");
+                int alliesItemSlot = fileConfiguration.getInt("items.allies.slot");
+                inventory.setItem(alliesItemSlot, alliesClanItem);
+            }
 
         });
     }

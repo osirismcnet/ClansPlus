@@ -115,19 +115,21 @@ public class AddMemberListInventory extends PaginatedInventory {
 
             addPaginatedMenuItems(fileConfiguration, true);
 
-            ItemStack sortItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
-                    ItemType.valueOf(fileConfiguration.getString("items.sort.type").toUpperCase()),
-                    fileConfiguration.getString("items.sort.value"),
-                    fileConfiguration.getInt("items.sort.customModelData"),
-                    fileConfiguration.getString("items.sort.name"),
-                    fileConfiguration.getStringList("items.sort.lore." + sortItemType.toString()), false), "sort");
-            int sortItemSlot = fileConfiguration.getInt("items.sort.slot");
-            if (sortItemSlot < 0)
-                sortItemSlot = 0;
-            if (sortItemSlot > 8)
-                sortItemSlot = 8;
-            sortItemSlot = (getSlots() - 9) + sortItemSlot;
-            inventory.setItem(sortItemSlot, sortItem);
+            if (fileConfiguration.getBoolean("items.sort.enabled", true)) {
+                ItemStack sortItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
+                        ItemType.valueOf(fileConfiguration.getString("items.sort.type").toUpperCase()),
+                        fileConfiguration.getString("items.sort.value"),
+                        fileConfiguration.getInt("items.sort.customModelData"),
+                        fileConfiguration.getString("items.sort.name"),
+                        fileConfiguration.getStringList("items.sort.lore." + sortItemType.toString()), false), "sort");
+                int sortItemSlot = fileConfiguration.getInt("items.sort.slot");
+                if (sortItemSlot < 0)
+                    sortItemSlot = 0;
+                if (sortItemSlot > 8)
+                    sortItemSlot = 8;
+                sortItemSlot = (getSlots() - 9) + sortItemSlot;
+                inventory.setItem(sortItemSlot, sortItem);
+            }
 
             if (PluginDataManager.getClanDatabase().isEmpty())
                 return;
@@ -156,6 +158,7 @@ public class AddMemberListInventory extends PaginatedInventory {
                 players.addAll(newPlayers);
             }
 
+            itemListSlots = fileConfiguration.getIntegerList("items.player.slots");
             for (int i = 0; i < getMaxItemsPerPage(); i++) {
                 index = getMaxItemsPerPage() * getPage() + i;
                 if (index >= players.size())
@@ -169,7 +172,7 @@ public class AddMemberListInventory extends PaginatedInventory {
                             fileConfiguration.getString("items.player.name"),
                             fileConfiguration.getStringList("items.player.lore"), false);
                     ItemStack itemStack = ClansPlus.nms.addCustomData(ItemUtil.getPlayerItemStack(playerItem, playerName), "player=" + playerName);
-                    inventory.addItem(itemStack);
+                    placeListItem(i, itemStack);
                 }
             }
         });

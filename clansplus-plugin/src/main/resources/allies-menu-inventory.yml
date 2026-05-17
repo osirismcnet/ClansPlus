@@ -39,6 +39,7 @@ items:
     lore:
       - ''
   close:
+    enabled: true
     name: '&cClose'
     slot: 31
     type: customhead
@@ -47,6 +48,7 @@ items:
     lore:
       - '&eClick here to close'
   back:
+    enabled: true
     name: '&eGo Back'
     slot: 30
     type: customhead
@@ -60,6 +62,7 @@ items:
     lore:
       - '&eClick here to go back'
   addAlly:
+    enabled: true
     name: '&aAdd Ally'
     slot: 11
     type: customhead
@@ -76,6 +79,7 @@ items:
       - ''
       - '&eClick here to configure'
   allyInvitation:
+    enabled: true
     name: '&bAlly Requests'
     slot: 13
     type: material
@@ -95,6 +99,7 @@ items:
       - ''
       - '&eClick here to configure'
   allyList:
+    enabled: true
     name: '&bManage Allies'
     slot: 15
     type: customhead

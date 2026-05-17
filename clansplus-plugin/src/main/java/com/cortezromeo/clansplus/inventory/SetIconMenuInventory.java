@@ -78,23 +78,27 @@ public class SetIconMenuInventory extends ClanPlusInventoryBase {
 
             addBasicButton(fileConfiguration, true);
 
-            ItemStack materialItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
-                    ItemType.valueOf(fileConfiguration.getString("items.material.type").toUpperCase()),
-                    fileConfiguration.getString("items.material.value"),
-                    fileConfiguration.getInt("items.material.customModelData"),
-                    fileConfiguration.getString("items.material.name"),
-                    fileConfiguration.getStringList("items.material.lore"), false), "material");
-            int materialItemSlot = fileConfiguration.getInt("items.material.slot");
-            inventory.setItem(materialItemSlot, materialItem);
+            if (fileConfiguration.getBoolean("items.material.enabled", true)) {
+                ItemStack materialItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
+                        ItemType.valueOf(fileConfiguration.getString("items.material.type").toUpperCase()),
+                        fileConfiguration.getString("items.material.value"),
+                        fileConfiguration.getInt("items.material.customModelData"),
+                        fileConfiguration.getString("items.material.name"),
+                        fileConfiguration.getStringList("items.material.lore"), false), "material");
+                int materialItemSlot = fileConfiguration.getInt("items.material.slot");
+                inventory.setItem(materialItemSlot, materialItem);
+            }
 
-            ItemStack customHeadItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
-                    ItemType.valueOf(fileConfiguration.getString("items.customHead.type").toUpperCase()),
-                    fileConfiguration.getString("items.customHead.value"),
-                    fileConfiguration.getInt("items.customHead.customModelData"),
-                    fileConfiguration.getString("items.customHead.name"),
-                    fileConfiguration.getStringList("items.customHead.lore"), false), "customHead");
-            int customHeadItemSlot = fileConfiguration.getInt("items.customHead.slot");
-            inventory.setItem(customHeadItemSlot, customHeadItem);
+            if (fileConfiguration.getBoolean("items.customHead.enabled", true)) {
+                ItemStack customHeadItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
+                        ItemType.valueOf(fileConfiguration.getString("items.customHead.type").toUpperCase()),
+                        fileConfiguration.getString("items.customHead.value"),
+                        fileConfiguration.getInt("items.customHead.customModelData"),
+                        fileConfiguration.getString("items.customHead.name"),
+                        fileConfiguration.getStringList("items.customHead.lore"), false), "customHead");
+                int customHeadItemSlot = fileConfiguration.getInt("items.customHead.slot");
+                inventory.setItem(customHeadItemSlot, customHeadItem);
+            }
         });
     }
 

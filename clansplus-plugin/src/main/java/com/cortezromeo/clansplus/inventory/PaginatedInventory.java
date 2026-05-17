@@ -13,6 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class PaginatedInventory extends ClanPlusInventoryBase {
@@ -21,6 +22,7 @@ public abstract class PaginatedInventory extends ClanPlusInventoryBase {
     protected boolean isUsingBorder;
     protected String search;
     protected int index = 0;
+    protected List<Integer> itemListSlots = new ArrayList<>();
 
     public PaginatedInventory(Player owner) {
         super(owner);
@@ -96,12 +98,6 @@ public abstract class PaginatedInventory extends ClanPlusInventoryBase {
             }
         }
 
-        ItemStack closeItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
-                ItemType.valueOf(fileConfiguration.getString("items.close.type").toUpperCase()),
-                fileConfiguration.getString("items.close.value"),
-                fileConfiguration.getInt("items.close.customModelData"),
-                fileConfiguration.getString("items.close.name"),
-                fileConfiguration.getStringList("items.close.lore"), false), "close");
         int closeItemSlot = fileConfiguration.getInt("items.close.slot");
         if (closeItemSlot < 0)
             closeItemSlot = 0;
@@ -109,7 +105,17 @@ public abstract class PaginatedInventory extends ClanPlusInventoryBase {
             closeItemSlot = 8;
         closeItemSlot = (getSlots() - 9) + closeItemSlot;
 
-        if (backButton) {
+        if (fileConfiguration.getBoolean("items.close.enabled", true)) {
+            ItemStack closeItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
+                    ItemType.valueOf(fileConfiguration.getString("items.close.type").toUpperCase()),
+                    fileConfiguration.getString("items.close.value"),
+                    fileConfiguration.getInt("items.close.customModelData"),
+                    fileConfiguration.getString("items.close.name"),
+                    fileConfiguration.getStringList("items.close.lore"), false), "close");
+            inventory.setItem(closeItemSlot, closeItem);
+        }
+
+        if (backButton && fileConfiguration.getBoolean("items.back.enabled", true)) {
             ItemStack backItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
                     ItemType.valueOf(fileConfiguration.getString("items.back.type").toUpperCase()),
                     fileConfiguration.getString("items.back.value"),
@@ -125,12 +131,6 @@ public abstract class PaginatedInventory extends ClanPlusInventoryBase {
             inventory.setItem(backItemSlot, backItem);
         }
 
-        ItemStack prevItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
-                ItemType.valueOf(fileConfiguration.getString("items.prevPage.type").toUpperCase()),
-                fileConfiguration.getString("items.prevPage.value"),
-                fileConfiguration.getInt("items.prevPage.customModelData"),
-                fileConfiguration.getString("items.prevPage.name"),
-                fileConfiguration.getStringList("items.prevPage.lore"), false), "prevPage");
         int prevPageItemSlot = fileConfiguration.getInt("items.prevPage.slot");
         if (prevPageItemSlot < 0)
             prevPageItemSlot = 0;
@@ -138,12 +138,6 @@ public abstract class PaginatedInventory extends ClanPlusInventoryBase {
             prevPageItemSlot = 8;
         prevPageItemSlot = (getSlots() - 9) + prevPageItemSlot;
 
-        ItemStack nextItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
-                ItemType.valueOf(fileConfiguration.getString("items.nextPage.type").toUpperCase()),
-                fileConfiguration.getString("items.nextPage.value"),
-                fileConfiguration.getInt("items.nextPage.customModelData"),
-                fileConfiguration.getString("items.nextPage.name"),
-                fileConfiguration.getStringList("items.nextPage.lore"), false), "nextPage");
         int nextPageItemSlot = fileConfiguration.getInt("items.nextPage.slot");
         if (nextPageItemSlot < 0)
             nextPageItemSlot = 0;
@@ -151,24 +145,42 @@ public abstract class PaginatedInventory extends ClanPlusInventoryBase {
             nextPageItemSlot = 8;
         nextPageItemSlot = (getSlots() - 9) + nextPageItemSlot;
 
-        ItemStack searchItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
-                ItemType.valueOf(fileConfiguration.getString("items.search.type").toUpperCase()),
-                fileConfiguration.getString("items.search.value"),
-                fileConfiguration.getInt("items.search.customModelData"),
-                fileConfiguration.getString("items.search.name"),
-                fileConfiguration.getStringList("items.search.lore"), false), "search");
-        int searchItemSlot = fileConfiguration.getInt("items.search.slot");
-        if (searchItemSlot < 0)
-            searchItemSlot = 0;
-        if (searchItemSlot > 8)
-            searchItemSlot = 8;
-        searchItemSlot = (getSlots() - 9) + searchItemSlot;
-        inventory.setItem(searchItemSlot, searchItem);
+        if (fileConfiguration.getBoolean("items.prevPage.enabled", true)) {
+            ItemStack prevItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
+                    ItemType.valueOf(fileConfiguration.getString("items.prevPage.type").toUpperCase()),
+                    fileConfiguration.getString("items.prevPage.value"),
+                    fileConfiguration.getInt("items.prevPage.customModelData"),
+                    fileConfiguration.getString("items.prevPage.name"),
+                    fileConfiguration.getStringList("items.prevPage.lore"), false), "prevPage");
+            if (getPage() > 0)
+                inventory.setItem(prevPageItemSlot, getPageItemStack(prevItem));
+        }
 
-        if (getPage() > 0)
-            inventory.setItem(prevPageItemSlot, getPageItemStack(prevItem));
-        inventory.setItem(closeItemSlot, closeItem);
-        inventory.setItem(nextPageItemSlot, getPageItemStack(nextItem));
+        if (fileConfiguration.getBoolean("items.nextPage.enabled", true)) {
+            ItemStack nextItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
+                    ItemType.valueOf(fileConfiguration.getString("items.nextPage.type").toUpperCase()),
+                    fileConfiguration.getString("items.nextPage.value"),
+                    fileConfiguration.getInt("items.nextPage.customModelData"),
+                    fileConfiguration.getString("items.nextPage.name"),
+                    fileConfiguration.getStringList("items.nextPage.lore"), false), "nextPage");
+            inventory.setItem(nextPageItemSlot, getPageItemStack(nextItem));
+        }
+
+        if (fileConfiguration.getBoolean("items.search.enabled", true)) {
+            ItemStack searchItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
+                    ItemType.valueOf(fileConfiguration.getString("items.search.type").toUpperCase()),
+                    fileConfiguration.getString("items.search.value"),
+                    fileConfiguration.getInt("items.search.customModelData"),
+                    fileConfiguration.getString("items.search.name"),
+                    fileConfiguration.getStringList("items.search.lore"), false), "search");
+            int searchItemSlot = fileConfiguration.getInt("items.search.slot");
+            if (searchItemSlot < 0)
+                searchItemSlot = 0;
+            if (searchItemSlot > 8)
+                searchItemSlot = 8;
+            searchItemSlot = (getSlots() - 9) + searchItemSlot;
+            inventory.setItem(searchItemSlot, searchItem);
+        }
     }
 
     @NotNull ItemStack getPageItemStack(ItemStack itemStack) {
@@ -185,6 +197,8 @@ public abstract class PaginatedInventory extends ClanPlusInventoryBase {
     }
 
     public int getMaxItemsPerPage() {
+        if (!itemListSlots.isEmpty())
+            return itemListSlots.size();
         if (getSlots() == 54)
             return 28 + (isUsingBorder ? 0 : 17);
         else if (getSlots() == 45)
@@ -195,6 +209,14 @@ public abstract class PaginatedInventory extends ClanPlusInventoryBase {
             return 7 + (isUsingBorder ? 0 : 11);
         else
             return 28 + (isUsingBorder ? 0 : 17);
+    }
+
+    protected void placeListItem(int slotIndex, ItemStack item) {
+        if (!itemListSlots.isEmpty() && slotIndex < itemListSlots.size()) {
+            inventory.setItem(itemListSlots.get(slotIndex), item);
+        } else {
+            inventory.addItem(item);
+        }
     }
 
     public int getPage() {

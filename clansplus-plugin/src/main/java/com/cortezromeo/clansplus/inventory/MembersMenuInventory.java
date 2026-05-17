@@ -78,23 +78,27 @@ public class MembersMenuInventory extends ClanPlusInventoryBase {
 
             addBasicButton(fileConfiguration, true);
 
-            ItemStack addMemberItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
-                    ItemType.valueOf(fileConfiguration.getString("items.addMember.type").toUpperCase()),
-                    fileConfiguration.getString("items.addMember.value"),
-                    fileConfiguration.getInt("items.addMember.customModelData"),
-                    fileConfiguration.getString("items.addMember.name"),
-                    fileConfiguration.getStringList("items.addMember.lore"), false), "addMember");
-            int addMemberItemSlot = fileConfiguration.getInt("items.addMember.slot");
-            inventory.setItem(addMemberItemSlot, addMemberItem);
+            if (fileConfiguration.getBoolean("items.addMember.enabled", true)) {
+                ItemStack addMemberItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
+                        ItemType.valueOf(fileConfiguration.getString("items.addMember.type").toUpperCase()),
+                        fileConfiguration.getString("items.addMember.value"),
+                        fileConfiguration.getInt("items.addMember.customModelData"),
+                        fileConfiguration.getString("items.addMember.name"),
+                        fileConfiguration.getStringList("items.addMember.lore"), false), "addMember");
+                int addMemberItemSlot = fileConfiguration.getInt("items.addMember.slot");
+                inventory.setItem(addMemberItemSlot, addMemberItem);
+            }
 
-            ItemStack memberListItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
-                    ItemType.valueOf(fileConfiguration.getString("items.memberList.type").toUpperCase()),
-                    fileConfiguration.getString("items.memberList.value"),
-                    fileConfiguration.getInt("items.memberList.customModelData"),
-                    fileConfiguration.getString("items.memberList.name"),
-                    fileConfiguration.getStringList("items.memberList.lore"), false), "memberList");
-            int memberListItemSlot = fileConfiguration.getInt("items.memberList.slot");
-            inventory.setItem(memberListItemSlot, memberListItem);
+            if (fileConfiguration.getBoolean("items.memberList.enabled", true)) {
+                ItemStack memberListItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
+                        ItemType.valueOf(fileConfiguration.getString("items.memberList.type").toUpperCase()),
+                        fileConfiguration.getString("items.memberList.value"),
+                        fileConfiguration.getInt("items.memberList.customModelData"),
+                        fileConfiguration.getString("items.memberList.name"),
+                        fileConfiguration.getStringList("items.memberList.lore"), false), "memberList");
+                int memberListItemSlot = fileConfiguration.getInt("items.memberList.slot");
+                inventory.setItem(memberListItemSlot, memberListItem);
+            }
         });
     }
 

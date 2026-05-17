@@ -48,6 +48,7 @@ items:
     lore:
       - ''
   close:
+    enabled: true
     name: '&cClose'
     slot: 49
     type: customhead

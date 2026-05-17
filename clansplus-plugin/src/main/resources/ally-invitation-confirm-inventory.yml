@@ -39,6 +39,7 @@ items:
     lore:
       - ''
   close:
+    enabled: true
     name: '&cClose'
     slot: 31
     type: customhead
@@ -52,6 +53,7 @@ items:
     lore:
       - '&eClick here to close'
   back:
+    enabled: true
     name: '&eGo Back'
     slot: 30
     type: customhead
@@ -65,6 +67,7 @@ items:
     lore:
       - '&eClick here to go back'
   accept:
+    enabled: true
     name: '&aAccept'
     slot: 11
     type: customhead
@@ -85,6 +88,7 @@ items:
       - ''
       - '&eClick here to accept'
   reject:
+    enabled: true
     name: '&cReject'
     slot: 15
     type: customhead
@@ -98,6 +102,7 @@ items:
     lore:
       - '&eClick here to reject'
   clan:
+    enabled: true
     name: '&#3498eb%formatClanName%'
     slot: 13
     lore:

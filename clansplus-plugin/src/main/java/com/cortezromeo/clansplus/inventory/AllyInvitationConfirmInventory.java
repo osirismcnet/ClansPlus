@@ -125,32 +125,38 @@ public class AllyInvitationConfirmInventory extends ClanPlusInventoryBase {
 
             addBasicButton(fileConfiguration, true);
 
-            ItemStack acceptItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
-                    ItemType.valueOf(fileConfiguration.getString("items.accept.type").toUpperCase()),
-                    fileConfiguration.getString("items.accept.value"),
-                    fileConfiguration.getInt("items.accept.customModelData"),
-                    fileConfiguration.getString("items.accept.name"),
-                    fileConfiguration.getStringList("items.accept.lore"), false), "accept");
-            int acceptItemSlot = fileConfiguration.getInt("items.accept.slot");
-            inventory.setItem(acceptItemSlot, acceptItem);
+            if (fileConfiguration.getBoolean("items.accept.enabled", true)) {
+                ItemStack acceptItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
+                        ItemType.valueOf(fileConfiguration.getString("items.accept.type").toUpperCase()),
+                        fileConfiguration.getString("items.accept.value"),
+                        fileConfiguration.getInt("items.accept.customModelData"),
+                        fileConfiguration.getString("items.accept.name"),
+                        fileConfiguration.getStringList("items.accept.lore"), false), "accept");
+                int acceptItemSlot = fileConfiguration.getInt("items.accept.slot");
+                inventory.setItem(acceptItemSlot, acceptItem);
+            }
 
-            ItemStack rejectItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
-                    ItemType.valueOf(fileConfiguration.getString("items.reject.type").toUpperCase()),
-                    fileConfiguration.getString("items.reject.value"),
-                    fileConfiguration.getInt("items.reject.customModelData"),
-                    fileConfiguration.getString("items.reject.name"),
-                    fileConfiguration.getStringList("items.reject.lore"), false), "reject");
-            int rejectItemSlot = fileConfiguration.getInt("items.reject.slot");
-            inventory.setItem(rejectItemSlot, rejectItem);
+            if (fileConfiguration.getBoolean("items.reject.enabled", true)) {
+                ItemStack rejectItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
+                        ItemType.valueOf(fileConfiguration.getString("items.reject.type").toUpperCase()),
+                        fileConfiguration.getString("items.reject.value"),
+                        fileConfiguration.getInt("items.reject.customModelData"),
+                        fileConfiguration.getString("items.reject.name"),
+                        fileConfiguration.getStringList("items.reject.lore"), false), "reject");
+                int rejectItemSlot = fileConfiguration.getInt("items.reject.slot");
+                inventory.setItem(rejectItemSlot, rejectItem);
+            }
 
-            ItemStack clanItem = ItemUtil.getClanItemStack(ItemUtil.getItem(
-                    PluginDataManager.getClanDatabase(clanName).getIconType(),
-                    PluginDataManager.getClanDatabase(clanName).getIconValue(),
-                    0,
-                    fileConfiguration.getString("items.clan.name"),
-                    fileConfiguration.getStringList("items.clan.lore"), false), PluginDataManager.getClanDatabase(targetClan));
-            int clanItemSlot = fileConfiguration.getInt("items.clan.slot");
-            inventory.setItem(clanItemSlot, clanItem);
+            if (fileConfiguration.getBoolean("items.clan.enabled", true)) {
+                ItemStack clanItem = ItemUtil.getClanItemStack(ItemUtil.getItem(
+                        PluginDataManager.getClanDatabase(clanName).getIconType(),
+                        PluginDataManager.getClanDatabase(clanName).getIconValue(),
+                        0,
+                        fileConfiguration.getString("items.clan.name"),
+                        fileConfiguration.getStringList("items.clan.lore"), false), PluginDataManager.getClanDatabase(targetClan));
+                int clanItemSlot = fileConfiguration.getInt("items.clan.slot");
+                inventory.setItem(clanItemSlot, clanItem);
+            }
         });
     }
 

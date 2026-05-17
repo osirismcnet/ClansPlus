@@ -89,23 +89,27 @@ public class LeaveConfirmationInventory extends ClanPlusInventoryBase {
 
             addBasicButton(fileConfiguration, true);
 
-            ItemStack confirmItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
-                    ItemType.valueOf(fileConfiguration.getString("items.confirm.type").toUpperCase()),
-                    fileConfiguration.getString("items.confirm.value"),
-                    fileConfiguration.getInt("items.confirm.customModelData"),
-                    fileConfiguration.getString("items.confirm.name"),
-                    fileConfiguration.getStringList("items.confirm.lore"), false), "confirm");
-            int confirmItemSlot = fileConfiguration.getInt("items.confirm.slot");
-            inventory.setItem(confirmItemSlot, confirmItem);
+            if (fileConfiguration.getBoolean("items.confirm.enabled", true)) {
+                ItemStack confirmItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
+                        ItemType.valueOf(fileConfiguration.getString("items.confirm.type").toUpperCase()),
+                        fileConfiguration.getString("items.confirm.value"),
+                        fileConfiguration.getInt("items.confirm.customModelData"),
+                        fileConfiguration.getString("items.confirm.name"),
+                        fileConfiguration.getStringList("items.confirm.lore"), false), "confirm");
+                int confirmItemSlot = fileConfiguration.getInt("items.confirm.slot");
+                inventory.setItem(confirmItemSlot, confirmItem);
+            }
 
-            ItemStack declineItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
-                    ItemType.valueOf(fileConfiguration.getString("items.decline.type").toUpperCase()),
-                    fileConfiguration.getString("items.decline.value"),
-                    fileConfiguration.getInt("items.decline.customModelData"),
-                    fileConfiguration.getString("items.decline.name"),
-                    fileConfiguration.getStringList("items.decline.lore"), false), "decline");
-            int declineItemSlot = fileConfiguration.getInt("items.decline.slot");
-            inventory.setItem(declineItemSlot, declineItem);
+            if (fileConfiguration.getBoolean("items.decline.enabled", true)) {
+                ItemStack declineItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
+                        ItemType.valueOf(fileConfiguration.getString("items.decline.type").toUpperCase()),
+                        fileConfiguration.getString("items.decline.value"),
+                        fileConfiguration.getInt("items.decline.customModelData"),
+                        fileConfiguration.getString("items.decline.name"),
+                        fileConfiguration.getStringList("items.decline.lore"), false), "decline");
+                int declineItemSlot = fileConfiguration.getInt("items.decline.slot");
+                inventory.setItem(declineItemSlot, declineItem);
+            }
         });
     }
 

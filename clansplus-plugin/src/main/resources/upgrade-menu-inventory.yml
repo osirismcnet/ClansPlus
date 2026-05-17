@@ -39,6 +39,7 @@ items:
     lore:
       - ''
   close:
+    enabled: true
     name: '&cClose'
     slot: 31
     type: customhead
@@ -52,6 +53,7 @@ items:
     lore:
       - '&eClick here to close'
   back:
+    enabled: true
     name: '&eGo Back'
     slot: 30
     type: customhead
@@ -65,6 +67,7 @@ items:
     lore:
       - '&eClick here to go back'
   upgradeMaxMember:
+    enabled: true
     name: '&bUpgrade Max Member Capacity'
     slot: 11
     type: customhead
@@ -84,6 +87,7 @@ items:
       - ''
       - '&eClick here to upgrade'
   upgradeMaxStorage:
+    enabled: true
     name: '&bUpgrade Max Storage Capacity'
     slot: 13
     type: customhead
@@ -103,6 +107,7 @@ items:
       - ''
       - '&eClick here to upgrade'
   skillsMenu:
+    enabled: true
     name: '&dSkill Management'
     slot: 15
     type: material

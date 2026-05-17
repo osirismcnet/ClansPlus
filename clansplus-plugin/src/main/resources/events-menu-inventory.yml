@@ -42,6 +42,7 @@ items:
     lore:
       - ''
   close:
+    enabled: true
     name: '&cClose'
     slot: 31
     type: customhead
@@ -55,6 +56,7 @@ items:
     lore:
       - '&eClick here to close'
   back:
+    enabled: true
     name: '&eGo Back'
     slot: 30
     type: customhead
@@ -68,6 +70,7 @@ items:
     lore:
       - '&eClick here to go back'
   warEvent:
+    enabled: true
     name: '&cClan War Event'
     slot: 13
     type: material

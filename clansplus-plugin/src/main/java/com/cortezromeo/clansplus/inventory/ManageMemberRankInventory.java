@@ -106,41 +106,45 @@ public class ManageMemberRankInventory extends ClanPlusInventoryBase {
 
             addBasicButton(fileConfiguration, true);
 
-            List<String> setOwnerItemLore = new ArrayList<>();
-            for (String lore : fileConfiguration.getStringList("items.setOwner.lore")) {
-                lore = lore.replace("%player%", playerName);
-                lore = lore.replace("%checkPermission%", ClanManager.isPlayerRankSatisfied(getOwner().getName(), Rank.LEADER) ? fileConfiguration.getString("items.setOwner.placeholders.checkPermission.true")
-                        : fileConfiguration.getString("items.setOwner.placeholders.checkPermission.false").replace("%getRequiredRank%", ClanManager.getFormatRank(Rank.LEADER)));
-                setOwnerItemLore.add(lore);
+            if (fileConfiguration.getBoolean("items.setOwner.enabled", true)) {
+                List<String> setOwnerItemLore = new ArrayList<>();
+                for (String lore : fileConfiguration.getStringList("items.setOwner.lore")) {
+                    lore = lore.replace("%player%", playerName);
+                    lore = lore.replace("%checkPermission%", ClanManager.isPlayerRankSatisfied(getOwner().getName(), Rank.LEADER) ? fileConfiguration.getString("items.setOwner.placeholders.checkPermission.true")
+                            : fileConfiguration.getString("items.setOwner.placeholders.checkPermission.false").replace("%getRequiredRank%", ClanManager.getFormatRank(Rank.LEADER)));
+                    setOwnerItemLore.add(lore);
+                }
+                ItemStack setOwnerItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
+                        ItemType.valueOf(fileConfiguration.getString("items.setOwner.type").toUpperCase()),
+                        fileConfiguration.getString("items.setOwner.value"),
+                        fileConfiguration.getInt("items.setOwner.customModelData"),
+                        fileConfiguration.getString("items.setOwner.name"),
+                        setOwnerItemLore, false), "setOwner=" + playerName);
+                int setOwnerItemSlot = fileConfiguration.getInt("items.setOwner.slot");
+                inventory.setItem(setOwnerItemSlot, setOwnerItem);
             }
-            ItemStack setOwnerItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
-                    ItemType.valueOf(fileConfiguration.getString("items.setOwner.type").toUpperCase()),
-                    fileConfiguration.getString("items.setOwner.value"),
-                    fileConfiguration.getInt("items.setOwner.customModelData"),
-                    fileConfiguration.getString("items.setOwner.name"),
-                    setOwnerItemLore, false), "setOwner=" + playerName);
-            int setOwnerItemSlot = fileConfiguration.getInt("items.setOwner.slot");
-            inventory.setItem(setOwnerItemSlot, setOwnerItem);
 
-            IClanData playerClanData = PluginDataManager.getClanDatabaseByPlayerName(playerName);
-            boolean isPlayerAManager = (PluginDataManager.getPlayerDatabase(playerName).getRank() == Rank.MANAGER);
-            String getPlayerRankPath = isPlayerAManager ? "isAManager" : "isAMember";
-            HashMap<Subject, Rank> clanSubjectPermission = playerClanData.getSubjectPermission();
-            List<String> setManagerItemLore = new ArrayList<>();
-            for (String lore : fileConfiguration.getStringList("items.setManager." + getPlayerRankPath + ".lore")) {
-                lore = lore.replace("%player%", playerName);
-                lore = lore.replace("%checkPermission%", ClanManager.isPlayerRankSatisfied(getOwner().getName(), (isPlayerAManager) ? clanSubjectPermission.get(Subject.REMOVEMANAGER) : playerClanData.getSubjectPermission().get(Subject.SETMANAGER)) ? fileConfiguration.getString("items.setManager." + getPlayerRankPath + ".placeholders.checkPermission.true")
-                        : fileConfiguration.getString("items.setManager." + getPlayerRankPath + ".placeholders.checkPermission.false").replace("%getRequiredRank%", ClanManager.getFormatRank(clanSubjectPermission.get(isPlayerAManager ? Subject.REMOVEMANAGER : Subject.SETMANAGER))));
-                setManagerItemLore.add(lore);
+            if (fileConfiguration.getBoolean("items.setManager.enabled", true)) {
+                IClanData playerClanData = PluginDataManager.getClanDatabaseByPlayerName(playerName);
+                boolean isPlayerAManager = (PluginDataManager.getPlayerDatabase(playerName).getRank() == Rank.MANAGER);
+                String getPlayerRankPath = isPlayerAManager ? "isAManager" : "isAMember";
+                HashMap<Subject, Rank> clanSubjectPermission = playerClanData.getSubjectPermission();
+                List<String> setManagerItemLore = new ArrayList<>();
+                for (String lore : fileConfiguration.getStringList("items.setManager." + getPlayerRankPath + ".lore")) {
+                    lore = lore.replace("%player%", playerName);
+                    lore = lore.replace("%checkPermission%", ClanManager.isPlayerRankSatisfied(getOwner().getName(), (isPlayerAManager) ? clanSubjectPermission.get(Subject.REMOVEMANAGER) : playerClanData.getSubjectPermission().get(Subject.SETMANAGER)) ? fileConfiguration.getString("items.setManager." + getPlayerRankPath + ".placeholders.checkPermission.true")
+                            : fileConfiguration.getString("items.setManager." + getPlayerRankPath + ".placeholders.checkPermission.false").replace("%getRequiredRank%", ClanManager.getFormatRank(clanSubjectPermission.get(isPlayerAManager ? Subject.REMOVEMANAGER : Subject.SETMANAGER))));
+                    setManagerItemLore.add(lore);
+                }
+                ItemStack setManagerItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
+                        ItemType.valueOf(fileConfiguration.getString("items.setManager." + getPlayerRankPath + ".type").toUpperCase()),
+                        fileConfiguration.getString("items.setManager." + getPlayerRankPath + ".value"),
+                        fileConfiguration.getInt("items.setManager." + getPlayerRankPath + ".customModelData"),
+                        fileConfiguration.getString("items.setManager." + getPlayerRankPath + ".name"),
+                        setManagerItemLore, false), (isPlayerAManager ? "removeManager=" : "setManager=") + playerName);
+                int setManagerItemSlot = fileConfiguration.getInt("items.setManager.slot");
+                inventory.setItem(setManagerItemSlot, setManagerItem);
             }
-            ItemStack setManagerItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
-                    ItemType.valueOf(fileConfiguration.getString("items.setManager." + getPlayerRankPath + ".type").toUpperCase()),
-                    fileConfiguration.getString("items.setManager." + getPlayerRankPath + ".value"),
-                    fileConfiguration.getInt("items.setManager." + getPlayerRankPath + ".customModelData"),
-                    fileConfiguration.getString("items.setManager." + getPlayerRankPath + ".name"),
-                    setManagerItemLore, false), (isPlayerAManager ? "removeManager=" : "setManager=") + playerName);
-            int setManagerItemSlot = fileConfiguration.getInt("items.setManager.slot");
-            inventory.setItem(setManagerItemSlot, setManagerItem);
 
         });
     }

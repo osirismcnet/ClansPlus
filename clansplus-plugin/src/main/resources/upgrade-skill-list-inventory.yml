@@ -159,6 +159,7 @@ items:
     lore:
       - ''
   skillReview:
+    enabled: true
     name: '%skillName%'
     slot: 0
     lore:
@@ -169,6 +170,7 @@ items:
       - '&fProgress:'
       - '%progressBar% &a%currentLevel%&7/&2%maxLevel%'
   invalidSkillLevel:
+    enabled: true
     name: '&7This skill is not configured'
     type: material
     value: LIGHT_GRAY_STAINED_GLASS_PANE
@@ -181,6 +183,7 @@ items:
     lore:
       - '&cCannot upgrade'
   nextPage:
+    enabled: true
     name: '&aNext Page'
     slot: 50
     type: customhead
@@ -194,6 +197,7 @@ items:
     lore:
       - '&7To page %nextPage%'
   prevPage:
+    enabled: true
     name: '&aPrevious Page'
     slot: 47
     type: customhead
@@ -207,6 +211,7 @@ items:
     lore:
       - '&7Back to page %prevPage%'
   close:
+    enabled: true
     name: '&cClose'
     slot: 49
     type: customhead
@@ -220,6 +225,7 @@ items:
     lore:
       - '&eClick here to close'
   back:
+    enabled: true
     name: '&eGo Back'
     slot: 48
     type: customhead

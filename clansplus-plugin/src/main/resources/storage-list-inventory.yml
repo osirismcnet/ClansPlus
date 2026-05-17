@@ -62,6 +62,7 @@ items:
     lore:
       - ''
   nextPage:
+    enabled: true
     name: '&aNext Page'
     slot: 26
     type: customhead
@@ -75,6 +76,7 @@ items:
     lore:
       - '&7Go to page %nextPage%'
   prevPage:
+    enabled: true
     name: '&aPrevious Page'
     slot: 18
     type: customhead
@@ -88,6 +90,7 @@ items:
     lore:
       - '&7Back to page %prevPage%'
   close:
+    enabled: true
     name: '&cClose'
     slot: 49
     type: customhead
@@ -101,6 +104,7 @@ items:
     lore:
       - '&eClick here to close'
   back:
+    enabled: true
     name: '&eGo Back'
     slot: 48
     type: customhead
@@ -114,6 +118,7 @@ items:
     lore:
       - '&eClick here to go back'
   clanStorageInfo:
+    enabled: true
     name: '&bClan Storage Information'
     slot: 50
     type: material

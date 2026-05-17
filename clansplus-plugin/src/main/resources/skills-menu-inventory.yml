@@ -39,6 +39,7 @@ items:
     lore:
       - ''
   close:
+    enabled: true
     name: '&cClose'
     slot: 31
     type: customhead
@@ -52,6 +53,7 @@ items:
     lore:
       - '&eClick here to close'
   back:
+    enabled: true
     name: '&eGo Back'
     slot: 30
     type: customhead
@@ -65,6 +67,7 @@ items:
     lore:
       - '&eClick here to go back'
   critical_hit:
+    enabled: true
     name: '%skillName%'
     slot: 11
     lore:
@@ -77,6 +80,7 @@ items:
       - ''
       - '&eClick here to customize'
   dodge:
+    enabled: true
     name: '%skillName%'
     slot: 12
     lore:
@@ -89,6 +93,7 @@ items:
       - ''
       - '&eClick here to customize'
   life_steal:
+    enabled: true
     name: '%skillName%'
     slot: 13
     lore:
@@ -101,6 +106,7 @@ items:
       - ''
       - '&eClick here to customize'
   boost_score:
+    enabled: true
     name: '%skillName%'
     slot: 14
     lore:

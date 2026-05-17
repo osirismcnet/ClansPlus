@@ -39,6 +39,7 @@ items:
     lore:
       - ''
   close:
+    enabled: true
     name: '&cClose'
     slot: 31
     type: customhead
@@ -52,6 +53,7 @@ items:
     lore:
       - '&eClick here to close'
   back:
+    enabled: true
     name: '&eGo Back'
     slot: 30
     type: customhead
@@ -65,6 +67,7 @@ items:
     lore:
       - '&eClick here to go back'
   setIcon:
+    enabled: true
     name: '&eCustomize Clan Icon'
     slot: 10
     type: material
@@ -84,6 +87,7 @@ items:
       - ''
       - '&eClick here to customize'
   setCustomName:
+    enabled: true
     name: '&eCustomize Custom Name'
     slot: 11
     type: material
@@ -105,6 +109,7 @@ items:
         true: '&eClick here to apply'
         false: '&cYou must be %getRequiredRank%&c to perform this.'
   setMessage:
+    enabled: true
     name: '&eCustomize Message'
     slot: 12
     type: material
@@ -128,6 +133,7 @@ items:
         true: '&eClick here to apply'
         false: '&cYou must be %getRequiredRank%&c to perform this.'
   setSpawn:
+    enabled: true
     name: '&eSet Clan Spawn'
     slot: 13
     type: material
@@ -148,6 +154,7 @@ items:
         true: '&eClick here to set spawn at your current location'
         false: '&cYou must be %getRequiredRank%&c to perform this.'
   setPermission:
+    enabled: true
     name: '&eConfigure Permissions'
     slot: 14
     type: material
@@ -182,6 +189,7 @@ items:
         true: '&eClick here to configure'
         false: '&cYou must be %getRequiredRank%&c to perform this.'
   setDiscord:
+    enabled: true
     name: '&eSet Discord'
     slot: 15
     type: customhead
@@ -203,6 +211,7 @@ items:
         true: '&eClick here to configure'
         false: '&cYou must be %getRequiredRank%&c to perform this.'
   disband:
+    enabled: true
     name: '&eDisband Clan'
     slot: 16
     type: customhead

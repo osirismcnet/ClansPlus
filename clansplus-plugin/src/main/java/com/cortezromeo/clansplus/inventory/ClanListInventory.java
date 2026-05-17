@@ -166,6 +166,7 @@ public class ClanListInventory extends PaginatedInventory {
                 clans.addAll(newClans);
             }
 
+            itemListSlots = fileConfiguration.getIntegerList("items.clan.slots");
             for (int i = 0; i < getMaxItemsPerPage(); i++) {
                 index = getMaxItemsPerPage() * getPage() + i;
                 if (index >= clans.size())
@@ -180,7 +181,7 @@ public class ClanListInventory extends PaginatedInventory {
                             fileConfiguration.getString("items.clan.name"),
                             fileConfiguration.getStringList("items.clan.lore"), false);
                     ItemStack itemStack = ClansPlus.nms.addCustomData(ItemUtil.getClanItemStack(clanItem, clanData), "clan=" + clanName);
-                    inventory.addItem(itemStack);
+                    placeListItem(i, itemStack);
                 }
             }
         });

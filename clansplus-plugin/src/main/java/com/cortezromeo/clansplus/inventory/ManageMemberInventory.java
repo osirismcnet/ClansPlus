@@ -96,40 +96,46 @@ public class ManageMemberInventory extends ClanPlusInventoryBase {
 
             addBasicButton(fileConfiguration, true);
 
-            ItemStack memberItem = ItemUtil.getPlayerItemStack(ItemUtil.getItem(
-                    ItemType.PLAYERHEAD,
-                    playerName,
-                    fileConfiguration.getInt("items.member.customModelData"),
-                    fileConfiguration.getString("items.member.name"),
-                    fileConfiguration.getStringList("items.member.lore"), false), playerName);
-            int memberItemSlot = fileConfiguration.getInt("items.member.slot");
-            inventory.setItem(memberItemSlot, memberItem);
-
-            ItemStack manageMembersRankItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
-                    ItemType.valueOf(fileConfiguration.getString("items.manageMembersRank.type").toUpperCase()),
-                    fileConfiguration.getString("items.manageMembersRank.value"),
-                    fileConfiguration.getInt("items.manageMembersRank.customModelData"),
-                    fileConfiguration.getString("items.manageMembersRank.name"),
-                    fileConfiguration.getStringList("items.manageMembersRank.lore"), false), "manageMembersRank=" + playerName);
-            int manageMembersRankItemSlot = fileConfiguration.getInt("items.manageMembersRank.slot");
-            inventory.setItem(manageMembersRankItemSlot, manageMembersRankItem);
-
-            List<String> kicKmMemberItemLore = new ArrayList<>();
-            Rank kickMemberRequiredRank = PluginDataManager.getClanDatabaseByPlayerName(playerName).getSubjectPermission().get(Subject.KICK);
-            for (String lore : fileConfiguration.getStringList("items.kickMember.lore")) {
-                lore = lore.replace("%player%", playerName);
-                lore = lore.replace("%checkPermission%", ClanManager.isPlayerRankSatisfied(getOwner().getName(), kickMemberRequiredRank) ? fileConfiguration.getString("items.kickMember.placeholders.checkPermission.true")
-                        : fileConfiguration.getString("items.kickMember.placeholders.checkPermission.false").replace("%getRequiredRank%", ClanManager.getFormatRank(kickMemberRequiredRank)));
-                kicKmMemberItemLore.add(lore);
+            if (fileConfiguration.getBoolean("items.member.enabled", true)) {
+                ItemStack memberItem = ItemUtil.getPlayerItemStack(ItemUtil.getItem(
+                        ItemType.PLAYERHEAD,
+                        playerName,
+                        fileConfiguration.getInt("items.member.customModelData"),
+                        fileConfiguration.getString("items.member.name"),
+                        fileConfiguration.getStringList("items.member.lore"), false), playerName);
+                int memberItemSlot = fileConfiguration.getInt("items.member.slot");
+                inventory.setItem(memberItemSlot, memberItem);
             }
-            ItemStack kickMemberItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
-                    ItemType.valueOf(fileConfiguration.getString("items.kickMember.type").toUpperCase()),
-                    fileConfiguration.getString("items.kickMember.value"),
-                    fileConfiguration.getInt("items.kickMember.customModelData"),
-                    fileConfiguration.getString("items.kickMember.name"),
-                    kicKmMemberItemLore, false), "kick=" + playerName);
-            int kickMemberItemSlot = fileConfiguration.getInt("items.kickMember.slot");
-            inventory.setItem(kickMemberItemSlot, kickMemberItem);
+
+            if (fileConfiguration.getBoolean("items.manageMembersRank.enabled", true)) {
+                ItemStack manageMembersRankItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
+                        ItemType.valueOf(fileConfiguration.getString("items.manageMembersRank.type").toUpperCase()),
+                        fileConfiguration.getString("items.manageMembersRank.value"),
+                        fileConfiguration.getInt("items.manageMembersRank.customModelData"),
+                        fileConfiguration.getString("items.manageMembersRank.name"),
+                        fileConfiguration.getStringList("items.manageMembersRank.lore"), false), "manageMembersRank=" + playerName);
+                int manageMembersRankItemSlot = fileConfiguration.getInt("items.manageMembersRank.slot");
+                inventory.setItem(manageMembersRankItemSlot, manageMembersRankItem);
+            }
+
+            if (fileConfiguration.getBoolean("items.kickMember.enabled", true)) {
+                List<String> kicKmMemberItemLore = new ArrayList<>();
+                Rank kickMemberRequiredRank = PluginDataManager.getClanDatabaseByPlayerName(playerName).getSubjectPermission().get(Subject.KICK);
+                for (String lore : fileConfiguration.getStringList("items.kickMember.lore")) {
+                    lore = lore.replace("%player%", playerName);
+                    lore = lore.replace("%checkPermission%", ClanManager.isPlayerRankSatisfied(getOwner().getName(), kickMemberRequiredRank) ? fileConfiguration.getString("items.kickMember.placeholders.checkPermission.true")
+                            : fileConfiguration.getString("items.kickMember.placeholders.checkPermission.false").replace("%getRequiredRank%", ClanManager.getFormatRank(kickMemberRequiredRank)));
+                    kicKmMemberItemLore.add(lore);
+                }
+                ItemStack kickMemberItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
+                        ItemType.valueOf(fileConfiguration.getString("items.kickMember.type").toUpperCase()),
+                        fileConfiguration.getString("items.kickMember.value"),
+                        fileConfiguration.getInt("items.kickMember.customModelData"),
+                        fileConfiguration.getString("items.kickMember.name"),
+                        kicKmMemberItemLore, false), "kick=" + playerName);
+                int kickMemberItemSlot = fileConfiguration.getInt("items.kickMember.slot");
+                inventory.setItem(kickMemberItemSlot, kickMemberItem);
+            }
 
         });
     }

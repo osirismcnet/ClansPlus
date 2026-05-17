@@ -39,6 +39,7 @@ items:
     lore:
       - ''
   close:
+    enabled: true
     name: '&cClose'
     slot: 49
     type: customhead
@@ -52,6 +53,7 @@ items:
     lore:
       - '&eClick here to close'
   back:
+    enabled: true
     name: '&eGo Back'
     slot: 48
     type: customhead
@@ -65,6 +67,7 @@ items:
     lore:
       - '&eClick here to go back'
   clan:
+    enabled: true
     name: '&#3498eb%formatClanName%'
     slot: 13
     customModelData: 0
@@ -79,6 +82,7 @@ items:
       - '&fMembers: &#31e012%memberSize%&f/&#127502%maxMembers%'
       - '&fAllies: &#28c9d1%allySize%'
   members:
+    enabled: true
     name: '&#31e012Members'
     slot: 28
     type: customhead
@@ -95,6 +99,7 @@ items:
       - ''
       - '&eClick here to manage'
   allies:
+    enabled: true
     name: '&#28c9d1Allies'
     slot: 31
     type: customhead
@@ -111,6 +116,7 @@ items:
       - ''
       - '&eClick here to manage'
   skillsMenu:
+    enabled: true
     name: '&dSkills'
     slot: 34
     type: material

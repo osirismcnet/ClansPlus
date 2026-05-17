@@ -83,38 +83,44 @@ public class AlliesMenuInventory extends ClanPlusInventoryBase {
 
             addBasicButton(fileConfiguration, true);
 
-            ItemStack addAllyItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
-                    ItemType.valueOf(fileConfiguration.getString("items.addAlly.type").toUpperCase()),
-                    fileConfiguration.getString("items.addAlly.value"),
-                    fileConfiguration.getInt("items.addAlly.customModelData"),
-                    fileConfiguration.getString("items.addAlly.name"),
-                    fileConfiguration.getStringList("items.addAlly.lore"), false), "addAlly");
-            int addAllyItemSlot = fileConfiguration.getInt("items.addAlly.slot");
-            inventory.setItem(addAllyItemSlot, addAllyItem);
-
-            List<String> allyInvitationLore = new ArrayList<>();
-            int totalAllyInvitations = PluginDataManager.getClanDatabaseByPlayerName(getOwner().getName()).getAllyInvitation().size();
-            for (String lore : fileConfiguration.getStringList("items.allyInvitation.lore")) {
-                lore = lore.replace("%totalAllyInvitations%", String.valueOf(totalAllyInvitations));
-                allyInvitationLore.add(lore);
+            if (fileConfiguration.getBoolean("items.addAlly.enabled", true)) {
+                ItemStack addAllyItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
+                        ItemType.valueOf(fileConfiguration.getString("items.addAlly.type").toUpperCase()),
+                        fileConfiguration.getString("items.addAlly.value"),
+                        fileConfiguration.getInt("items.addAlly.customModelData"),
+                        fileConfiguration.getString("items.addAlly.name"),
+                        fileConfiguration.getStringList("items.addAlly.lore"), false), "addAlly");
+                int addAllyItemSlot = fileConfiguration.getInt("items.addAlly.slot");
+                inventory.setItem(addAllyItemSlot, addAllyItem);
             }
-            ItemStack allyInvitationItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
-                    ItemType.valueOf(fileConfiguration.getString("items.allyInvitation.type").toUpperCase()),
-                    fileConfiguration.getString("items.allyInvitation.value"),
-                    fileConfiguration.getInt("items.allyInvitation.customModelData"),
-                    fileConfiguration.getString("items.allyInvitation.name"),
-                    allyInvitationLore, totalAllyInvitations > 0), "allyInvitation");
-            int allyInvitationItemSlot = fileConfiguration.getInt("items.allyInvitation.slot");
-            inventory.setItem(allyInvitationItemSlot, allyInvitationItem);
 
-            ItemStack allyListItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
-                    ItemType.valueOf(fileConfiguration.getString("items.allyList.type").toUpperCase()),
-                    fileConfiguration.getString("items.allyList.value"),
-                    fileConfiguration.getInt("items.allyList.customModelData"),
-                    fileConfiguration.getString("items.allyList.name"),
-                    fileConfiguration.getStringList("items.allyList.lore"), false), "allyList");
-            int allyListItemSlot = fileConfiguration.getInt("items.allyList.slot");
-            inventory.setItem(allyListItemSlot, allyListItem);
+            if (fileConfiguration.getBoolean("items.allyInvitation.enabled", true)) {
+                List<String> allyInvitationLore = new ArrayList<>();
+                int totalAllyInvitations = PluginDataManager.getClanDatabaseByPlayerName(getOwner().getName()).getAllyInvitation().size();
+                for (String lore : fileConfiguration.getStringList("items.allyInvitation.lore")) {
+                    lore = lore.replace("%totalAllyInvitations%", String.valueOf(totalAllyInvitations));
+                    allyInvitationLore.add(lore);
+                }
+                ItemStack allyInvitationItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
+                        ItemType.valueOf(fileConfiguration.getString("items.allyInvitation.type").toUpperCase()),
+                        fileConfiguration.getString("items.allyInvitation.value"),
+                        fileConfiguration.getInt("items.allyInvitation.customModelData"),
+                        fileConfiguration.getString("items.allyInvitation.name"),
+                        allyInvitationLore, totalAllyInvitations > 0), "allyInvitation");
+                int allyInvitationItemSlot = fileConfiguration.getInt("items.allyInvitation.slot");
+                inventory.setItem(allyInvitationItemSlot, allyInvitationItem);
+            }
+
+            if (fileConfiguration.getBoolean("items.allyList.enabled", true)) {
+                ItemStack allyListItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
+                        ItemType.valueOf(fileConfiguration.getString("items.allyList.type").toUpperCase()),
+                        fileConfiguration.getString("items.allyList.value"),
+                        fileConfiguration.getInt("items.allyList.customModelData"),
+                        fileConfiguration.getString("items.allyList.name"),
+                        fileConfiguration.getStringList("items.allyList.lore"), false), "allyList");
+                int allyListItemSlot = fileConfiguration.getInt("items.allyList.slot");
+                inventory.setItem(allyListItemSlot, allyListItem);
+            }
         });
     }
 

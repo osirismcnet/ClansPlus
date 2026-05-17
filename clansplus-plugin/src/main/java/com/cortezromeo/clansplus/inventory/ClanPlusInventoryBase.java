@@ -51,16 +51,18 @@ public abstract class ClanPlusInventoryBase implements InventoryHolder {
             }
         }
 
-        ItemStack closeItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
-                ItemType.valueOf(fileConfiguration.getString("items.close.type").toUpperCase()),
-                fileConfiguration.getString("items.close.value"),
-                fileConfiguration.getInt("items.close.customModelData"),
-                fileConfiguration.getString("items.close.name"),
-                fileConfiguration.getStringList("items.close.lore"), false), "close");
-        int closeItemSlot = fileConfiguration.getInt("items.close.slot");
-        inventory.setItem(closeItemSlot, closeItem);
+        if (fileConfiguration.getBoolean("items.close.enabled", true)) {
+            ItemStack closeItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
+                    ItemType.valueOf(fileConfiguration.getString("items.close.type").toUpperCase()),
+                    fileConfiguration.getString("items.close.value"),
+                    fileConfiguration.getInt("items.close.customModelData"),
+                    fileConfiguration.getString("items.close.name"),
+                    fileConfiguration.getStringList("items.close.lore"), false), "close");
+            int closeItemSlot = fileConfiguration.getInt("items.close.slot");
+            inventory.setItem(closeItemSlot, closeItem);
+        }
 
-        if (backButton) {
+        if (backButton && fileConfiguration.getBoolean("items.back.enabled", true)) {
             ItemStack backItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
                     ItemType.valueOf(fileConfiguration.getString("items.back.type").toUpperCase()),
                     fileConfiguration.getString("items.back.value"),

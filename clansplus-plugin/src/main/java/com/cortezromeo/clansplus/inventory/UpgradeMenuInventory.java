@@ -134,54 +134,59 @@ public class UpgradeMenuInventory extends ClanPlusInventoryBase {
         ClansPlus.support.getFoliaLib().getScheduler().runAsync(task -> {
             addBasicButton(fileConfiguration, true);
 
-            List<String> upgradeMaxStoragesItemLore = new ArrayList<>();
             IClanData playerClanData = PluginDataManager.getClanDatabaseByPlayerName(getOwner().getName());
-            int newMaxStorages = playerClanData.getMaxStorage() + 1;
-            CurrencyType upgradeStorageCT = CurrencyType.valueOf(UpgradeFile.get().getString("upgrade.max-storages.currency-type").toUpperCase());
-            for (String lore : fileConfiguration.getStringList("items.upgradeMaxStorage.lore")) {
-                lore = lore.replace("%totalStorages%", String.valueOf(playerClanData.getMaxStorage()));
-                lore = lore.replace("%newMaxStorages%", String.valueOf(newMaxStorages));
-                lore = lore.replace("%currencySymbol%", StringUtil.getCurrencySymbolFormat(upgradeStorageCT));
-                lore = lore.replace("%currencyName%", StringUtil.getCurrencyNameFormat(upgradeStorageCT));
-                if (UpgradeFile.get().getConfigurationSection("upgrade.max-storages.price").getKeys(false).contains(String.valueOf(newMaxStorages))) {
-                    lore = lore.replace("%price%", String.valueOf(UpgradeFile.get().getLong("upgrade.max-storages.price." + newMaxStorages)));
-                } else {
-                    lore = lore.replace("%price%", String.valueOf(UpgradeFile.get().getLong("upgrade.max-storages.price.else")));
-                }
-                upgradeMaxStoragesItemLore.add(lore);
-            }
-            ItemStack upgradeMaxStoragesItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
-                    ItemType.valueOf(fileConfiguration.getString("items.upgradeMaxStorage.type").toUpperCase()),
-                    fileConfiguration.getString("items.upgradeMaxStorage.value"),
-                    fileConfiguration.getInt("items.upgradeMaxStorage.customModelData"),
-                    fileConfiguration.getString("items.upgradeMaxStorage.name"),
-                    upgradeMaxStoragesItemLore, false), "upgradeStorage");
-            int upgradeMaxMemberItemSlot = fileConfiguration.getInt("items.upgradeMaxStorage.slot");
-            inventory.setItem(upgradeMaxMemberItemSlot, upgradeMaxStoragesItem);
 
-            List<String> upgradeMaxMembersItemLore = new ArrayList<>();
-            int newMaxMembers = playerClanData.getMaxMembers() + 1;
-            CurrencyType upgradeMaxMembersCurrencyType = CurrencyType.valueOf(UpgradeFile.get().getString("upgrade.max-members.currency-type").toUpperCase());
-            for (String lore : fileConfiguration.getStringList("items.upgradeMaxMember.lore")) {
-                lore = lore.replace("%totalMembers%", String.valueOf(playerClanData.getMembers().size()));
-                lore = lore.replace("%newMaxMembers%", String.valueOf(newMaxMembers));
-                lore = lore.replace("%currencySymbol%", StringUtil.getCurrencySymbolFormat(upgradeMaxMembersCurrencyType));
-                lore = lore.replace("%currencyName%", StringUtil.getCurrencyNameFormat(upgradeMaxMembersCurrencyType));
-                if (UpgradeFile.get().getConfigurationSection("upgrade.max-members.price").getKeys(false).contains(String.valueOf(newMaxMembers))) {
-                    lore = lore.replace("%price%", String.valueOf(UpgradeFile.get().getLong("upgrade.max-members.price." + newMaxMembers)));
-                } else {
-                    lore = lore.replace("%price%", String.valueOf(UpgradeFile.get().getLong("upgrade.max-members.price.else")));
+            if (fileConfiguration.getBoolean("items.upgradeMaxStorage.enabled", true)) {
+                List<String> upgradeMaxStoragesItemLore = new ArrayList<>();
+                int newMaxStorages = playerClanData.getMaxStorage() + 1;
+                CurrencyType upgradeStorageCT = CurrencyType.valueOf(UpgradeFile.get().getString("upgrade.max-storages.currency-type").toUpperCase());
+                for (String lore : fileConfiguration.getStringList("items.upgradeMaxStorage.lore")) {
+                    lore = lore.replace("%totalStorages%", String.valueOf(playerClanData.getMaxStorage()));
+                    lore = lore.replace("%newMaxStorages%", String.valueOf(newMaxStorages));
+                    lore = lore.replace("%currencySymbol%", StringUtil.getCurrencySymbolFormat(upgradeStorageCT));
+                    lore = lore.replace("%currencyName%", StringUtil.getCurrencyNameFormat(upgradeStorageCT));
+                    if (UpgradeFile.get().getConfigurationSection("upgrade.max-storages.price").getKeys(false).contains(String.valueOf(newMaxStorages))) {
+                        lore = lore.replace("%price%", String.valueOf(UpgradeFile.get().getLong("upgrade.max-storages.price." + newMaxStorages)));
+                    } else {
+                        lore = lore.replace("%price%", String.valueOf(UpgradeFile.get().getLong("upgrade.max-storages.price.else")));
+                    }
+                    upgradeMaxStoragesItemLore.add(lore);
                 }
-                upgradeMaxMembersItemLore.add(lore);
+                ItemStack upgradeMaxStoragesItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
+                        ItemType.valueOf(fileConfiguration.getString("items.upgradeMaxStorage.type").toUpperCase()),
+                        fileConfiguration.getString("items.upgradeMaxStorage.value"),
+                        fileConfiguration.getInt("items.upgradeMaxStorage.customModelData"),
+                        fileConfiguration.getString("items.upgradeMaxStorage.name"),
+                        upgradeMaxStoragesItemLore, false), "upgradeStorage");
+                int upgradeMaxStorageItemSlot = fileConfiguration.getInt("items.upgradeMaxStorage.slot");
+                inventory.setItem(upgradeMaxStorageItemSlot, upgradeMaxStoragesItem);
             }
-            ItemStack upgradeMaxMembersItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
-                    ItemType.valueOf(fileConfiguration.getString("items.upgradeMaxMember.type").toUpperCase()),
-                    fileConfiguration.getString("items.upgradeMaxMember.value"),
-                    fileConfiguration.getInt("items.upgradeMaxMember.customModelData"),
-                    fileConfiguration.getString("items.upgradeMaxMember.name"),
-                    upgradeMaxMembersItemLore, false), "upgradeMaxMember");
-            int upgradeMaxMembersItemSlot = fileConfiguration.getInt("items.upgradeMaxMember.slot");
-            inventory.setItem(upgradeMaxMembersItemSlot, upgradeMaxMembersItem);
+
+            if (fileConfiguration.getBoolean("items.upgradeMaxMember.enabled", true)) {
+                List<String> upgradeMaxMembersItemLore = new ArrayList<>();
+                int newMaxMembers = playerClanData.getMaxMembers() + 1;
+                CurrencyType upgradeMaxMembersCurrencyType = CurrencyType.valueOf(UpgradeFile.get().getString("upgrade.max-members.currency-type").toUpperCase());
+                for (String lore : fileConfiguration.getStringList("items.upgradeMaxMember.lore")) {
+                    lore = lore.replace("%totalMembers%", String.valueOf(playerClanData.getMembers().size()));
+                    lore = lore.replace("%newMaxMembers%", String.valueOf(newMaxMembers));
+                    lore = lore.replace("%currencySymbol%", StringUtil.getCurrencySymbolFormat(upgradeMaxMembersCurrencyType));
+                    lore = lore.replace("%currencyName%", StringUtil.getCurrencyNameFormat(upgradeMaxMembersCurrencyType));
+                    if (UpgradeFile.get().getConfigurationSection("upgrade.max-members.price").getKeys(false).contains(String.valueOf(newMaxMembers))) {
+                        lore = lore.replace("%price%", String.valueOf(UpgradeFile.get().getLong("upgrade.max-members.price." + newMaxMembers)));
+                    } else {
+                        lore = lore.replace("%price%", String.valueOf(UpgradeFile.get().getLong("upgrade.max-members.price.else")));
+                    }
+                    upgradeMaxMembersItemLore.add(lore);
+                }
+                ItemStack upgradeMaxMembersItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
+                        ItemType.valueOf(fileConfiguration.getString("items.upgradeMaxMember.type").toUpperCase()),
+                        fileConfiguration.getString("items.upgradeMaxMember.value"),
+                        fileConfiguration.getInt("items.upgradeMaxMember.customModelData"),
+                        fileConfiguration.getString("items.upgradeMaxMember.name"),
+                        upgradeMaxMembersItemLore, false), "upgradeMaxMember");
+                int upgradeMaxMembersItemSlot = fileConfiguration.getInt("items.upgradeMaxMember.slot");
+                inventory.setItem(upgradeMaxMembersItemSlot, upgradeMaxMembersItem);
+            }
 
         });
     }

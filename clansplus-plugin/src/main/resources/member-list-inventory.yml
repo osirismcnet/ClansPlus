@@ -41,6 +41,7 @@ items:
     lore:
       - ''
   nextPage:
+    enabled: true
     name: '&aNext Page'
     slot: 8
     type: customhead
@@ -54,6 +55,7 @@ items:
     lore:
       - '&7To page %nextPage%'
   prevPage:
+    enabled: true
     name: '&aPrevious Page'
     slot: 0
     type: customhead
@@ -67,6 +69,7 @@ items:
     lore:
       - '&7Back to page %prevPage%'
   search:
+    enabled: true
     name: '&6Search'
     slot: 6
     type: material
@@ -81,6 +84,7 @@ items:
       - '&eClick here to search'
       - '&eRight-click to clear search list'
   close:
+    enabled: true
     name: '&cClose'
     slot: 4
     type: customhead
@@ -94,6 +98,7 @@ items:
     lore:
       - '&eClick here to close'
   back:
+    enabled: true
     name: '&eGo Back'
     slot: 3
     type: customhead
@@ -108,6 +113,7 @@ items:
       - '&eClick here to go back'
   player:
     name: '&6%player%'
+    slots: []
     click-sound:
       enabled: true
       name: 'BLOCK_STONE_BUTTON_CLICK_ON'
@@ -126,6 +132,7 @@ items:
       - ''
       - '&eClick to interact'
   sort:
+    enabled: true
     name: '&bSort'
     slot: 5
     type: material

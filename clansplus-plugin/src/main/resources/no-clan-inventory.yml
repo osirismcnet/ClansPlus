@@ -39,6 +39,7 @@ items:
     lore:
       - ''
   close:
+    enabled: true
     name: '&cClose'
     slot: 31
     type: customhead
@@ -52,6 +53,7 @@ items:
     lore:
       - '&eClick here to close'
   createNewClan:
+    enabled: true
     name: '&#03fc0bCreate New Clan'
     slot: 11
     type: customhead
@@ -68,6 +70,7 @@ items:
       - ''
       - '&eClick here to create'
   clanList:
+    enabled: true
     name: '&#3498ebClan List'
     slot: 15
     type: customhead

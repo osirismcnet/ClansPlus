@@ -39,6 +39,7 @@ items:
     lore:
       - ''
   close:
+    enabled: true
     name: '&cClose'
     slot: 31
     type: customhead
@@ -52,6 +53,7 @@ items:
     lore:
       - '&eClick here to close'
   back:
+    enabled: true
     name: '&eGo Back'
     slot: 30
     type: customhead
@@ -65,6 +67,7 @@ items:
     lore:
       - '&eClick here to go back'
   member:
+    enabled: true
     name: '&dMember Info'
     slot: 13
     lore:
@@ -78,7 +81,10 @@ items:
       - '&fJoined on: &e%joinDate%'
       - '&fRank: %rank%'
       - '&fPoints earned: &b%scoreCollected%'
+      - '&fPoints gained: &a%pointsGained%'
+      - '&fPoints lost: &c%pointsLost%'
   manageMembersRank:
+    enabled: true
     name: '&bSet Role'
     slot: 10
     type: material
@@ -95,6 +101,7 @@ items:
       - ''
       - '&eClick here to customize'
   kickMember:
+    enabled: true
     name: '&cKick Player'
     slot: 16
     type: customhead

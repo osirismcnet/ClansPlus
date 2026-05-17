@@ -149,6 +149,7 @@ public class AllyListInventory extends PaginatedInventory {
                 allies.addAll(newAllies);
             }
 
+            itemListSlots = fileConfiguration.getIntegerList("items.clan.slots");
             for (int i = 0; i < getMaxItemsPerPage(); i++) {
                 index = getMaxItemsPerPage() * getPage() + i;
                 if (index >= allies.size())
@@ -163,7 +164,7 @@ public class AllyListInventory extends PaginatedInventory {
                             fileConfiguration.getString("items.clan.name"),
                             fileConfiguration.getStringList("items.clan.lore"), false);
                     ItemStack itemStack = ClansPlus.nms.addCustomData(ItemUtil.getClanItemStack(clanItem, clanData), "ally=" + clanName);
-                    inventory.addItem(itemStack);
+                    placeListItem(i, itemStack);
                 }
             }
         });

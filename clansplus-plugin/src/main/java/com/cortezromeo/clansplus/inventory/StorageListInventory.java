@@ -114,50 +114,56 @@ public class StorageListInventory extends PaginatedInventory {
         ClansPlus.support.getFoliaLib().getScheduler().runAsync(task -> {
             addBasicButton(fileConfiguration, true);
 
-            ItemStack prevItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
-                    ItemType.valueOf(fileConfiguration.getString("items.prevPage.type").toUpperCase()),
-                    fileConfiguration.getString("items.prevPage.value"),
-                    fileConfiguration.getInt("items.prevPage.customModelData"),
-                    fileConfiguration.getString("items.prevPage.name"),
-                    fileConfiguration.getStringList("items.prevPage.lore"), false), "prevPage");
             int prevPageItemSlot = fileConfiguration.getInt("items.prevPage.slot");
-
-            ItemStack nextItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
-                    ItemType.valueOf(fileConfiguration.getString("items.nextPage.type").toUpperCase()),
-                    fileConfiguration.getString("items.nextPage.value"),
-                    fileConfiguration.getInt("items.nextPage.customModelData"),
-                    fileConfiguration.getString("items.nextPage.name"),
-                    fileConfiguration.getStringList("items.nextPage.lore"), false), "nextPage");
             int nextPageItemSlot = fileConfiguration.getInt("items.nextPage.slot");
 
-            if (page > 0)
-                inventory.setItem(prevPageItemSlot, getPageItemStack(prevItem));
-            inventory.setItem(nextPageItemSlot, getPageItemStack(nextItem));
+            if (fileConfiguration.getBoolean("items.prevPage.enabled", true)) {
+                ItemStack prevItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
+                        ItemType.valueOf(fileConfiguration.getString("items.prevPage.type").toUpperCase()),
+                        fileConfiguration.getString("items.prevPage.value"),
+                        fileConfiguration.getInt("items.prevPage.customModelData"),
+                        fileConfiguration.getString("items.prevPage.name"),
+                        fileConfiguration.getStringList("items.prevPage.lore"), false), "prevPage");
+                if (page > 0)
+                    inventory.setItem(prevPageItemSlot, getPageItemStack(prevItem));
+            }
+
+            if (fileConfiguration.getBoolean("items.nextPage.enabled", true)) {
+                ItemStack nextItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
+                        ItemType.valueOf(fileConfiguration.getString("items.nextPage.type").toUpperCase()),
+                        fileConfiguration.getString("items.nextPage.value"),
+                        fileConfiguration.getInt("items.nextPage.customModelData"),
+                        fileConfiguration.getString("items.nextPage.name"),
+                        fileConfiguration.getStringList("items.nextPage.lore"), false), "nextPage");
+                inventory.setItem(nextPageItemSlot, getPageItemStack(nextItem));
+            }
 
             IClanData clanData = PluginDataManager.getClanDatabaseByPlayerName(getOwner().getName());
 
-            int itemsStored = 0;
-            if (!clanData.getStorageHashMap().isEmpty()) {
-                for (int clanStorageNumber : clanData.getStorageHashMap().keySet()) {
-                    itemsStored = itemsStored + getUsedSlot(clanStorageNumber, clanData);
+            if (fileConfiguration.getBoolean("items.clanStorageInfo.enabled", true)) {
+                int itemsStored = 0;
+                if (!clanData.getStorageHashMap().isEmpty()) {
+                    for (int clanStorageNumber : clanData.getStorageHashMap().keySet()) {
+                        itemsStored = itemsStored + getUsedSlot(clanStorageNumber, clanData);
+                    }
                 }
+
+                List<String> clanStorageInfoLore = fileConfiguration.getStringList("items.clanStorageInfo.lore");
+                int finalItemsStored = itemsStored;
+                clanStorageInfoLore.replaceAll(string -> ClansPlus.nms.addColor(string
+                        .replace("%clanMaxStorage%", String.valueOf(clanData.getMaxStorage()))
+                        .replace("%serverMaxStorage%", String.valueOf(Settings.STORAGE_SETTINGS_MAX_INVENTORY))
+                        .replace("%itemsStored%", String.valueOf(finalItemsStored))));
+
+                ItemStack clanStorageInfoItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
+                        ItemType.valueOf(fileConfiguration.getString("items.clanStorageInfo.type").toUpperCase()),
+                        fileConfiguration.getString("items.clanStorageInfo.value"),
+                        fileConfiguration.getInt("items.clanStorageInfo.customModelData"),
+                        fileConfiguration.getString("items.clanStorageInfo.name"),
+                        clanStorageInfoLore, false), "clanStorageInfo");
+                int clanStorageInfoItemSlot = fileConfiguration.getInt("items.clanStorageInfo.slot");
+                inventory.setItem(clanStorageInfoItemSlot, ItemUtil.getClanItemStack(clanStorageInfoItem, clanData));
             }
-
-            List<String> clanStorageInfoLore = fileConfiguration.getStringList("items.clanStorageInfo.lore");
-            int finalItemsStored = itemsStored;
-            clanStorageInfoLore.replaceAll(string -> ClansPlus.nms.addColor(string
-                    .replace("%clanMaxStorage%", String.valueOf(clanData.getMaxStorage()))
-                    .replace("%serverMaxStorage%", String.valueOf(Settings.STORAGE_SETTINGS_MAX_INVENTORY))
-                    .replace("%itemsStored%", String.valueOf(finalItemsStored))));
-
-            ItemStack clanStorageInfoItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
-                    ItemType.valueOf(fileConfiguration.getString("items.clanStorageInfo.type").toUpperCase()),
-                    fileConfiguration.getString("items.clanStorageInfo.value"),
-                    fileConfiguration.getInt("items.clanStorageInfo.customModelData"),
-                    fileConfiguration.getString("items.clanStorageInfo.name"),
-                    clanStorageInfoLore, false), "clanStorageInfo");
-            int clanStorageInfoItemSlot = fileConfiguration.getInt("items.clanStorageInfo.slot");
-            inventory.setItem(clanStorageInfoItemSlot, ItemUtil.getClanItemStack(clanStorageInfoItem, clanData));
 
             storages.clear();
             for (int maxStorage = 1; maxStorage <= Settings.STORAGE_SETTINGS_MAX_INVENTORY; maxStorage++) {

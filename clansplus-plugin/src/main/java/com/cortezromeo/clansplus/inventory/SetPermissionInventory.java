@@ -137,38 +137,44 @@ public class SetPermissionInventory extends PaginatedInventory {
         ClansPlus.support.getFoliaLib().getScheduler().runAsync(task -> {
             addBasicButton(fileConfiguration, true);
 
-            ItemStack restItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
-                    ItemType.valueOf(fileConfiguration.getString("items.reset.type").toUpperCase()),
-                    fileConfiguration.getString("items.reset.value"),
-                    fileConfiguration.getInt("items.reset.customModelData"),
-                    fileConfiguration.getString("items.reset.name"),
-                    fileConfiguration.getStringList("items.reset.lore"), false), "reset");
-            int resetItemSlot = fileConfiguration.getInt("items.reset.slot");
-            inventory.setItem(resetItemSlot, restItem);
+            if (fileConfiguration.getBoolean("items.reset.enabled", true)) {
+                ItemStack restItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
+                        ItemType.valueOf(fileConfiguration.getString("items.reset.type").toUpperCase()),
+                        fileConfiguration.getString("items.reset.value"),
+                        fileConfiguration.getInt("items.reset.customModelData"),
+                        fileConfiguration.getString("items.reset.name"),
+                        fileConfiguration.getStringList("items.reset.lore"), false), "reset");
+                int resetItemSlot = fileConfiguration.getInt("items.reset.slot");
+                inventory.setItem(resetItemSlot, restItem);
+            }
 
             IClanData playerClanData = PluginDataManager.getClanDatabaseByPlayerName(getOwner().getName());
             if (playerClanData == null)
                 return;
 
-            ItemStack prevItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
-                    ItemType.valueOf(fileConfiguration.getString("items.prevPage.type").toUpperCase()),
-                    fileConfiguration.getString("items.prevPage.value"),
-                    fileConfiguration.getInt("items.prevPage.customModelData"),
-                    fileConfiguration.getString("items.prevPage.name"),
-                    fileConfiguration.getStringList("items.prevPage.lore"), false), "prevPage");
             int prevPageItemSlot = fileConfiguration.getInt("items.prevPage.slot");
-
-            ItemStack nextItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
-                    ItemType.valueOf(fileConfiguration.getString("items.nextPage.type").toUpperCase()),
-                    fileConfiguration.getString("items.nextPage.value"),
-                    fileConfiguration.getInt("items.nextPage.customModelData"),
-                    fileConfiguration.getString("items.nextPage.name"),
-                    fileConfiguration.getStringList("items.nextPage.lore"), false), "nextPage");
             int nextPageItemSlot = fileConfiguration.getInt("items.nextPage.slot");
 
-            if (page > 0)
-                inventory.setItem(prevPageItemSlot, getPageItemStack(prevItem));
-            inventory.setItem(nextPageItemSlot, getPageItemStack(nextItem));
+            if (fileConfiguration.getBoolean("items.prevPage.enabled", true)) {
+                ItemStack prevItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
+                        ItemType.valueOf(fileConfiguration.getString("items.prevPage.type").toUpperCase()),
+                        fileConfiguration.getString("items.prevPage.value"),
+                        fileConfiguration.getInt("items.prevPage.customModelData"),
+                        fileConfiguration.getString("items.prevPage.name"),
+                        fileConfiguration.getStringList("items.prevPage.lore"), false), "prevPage");
+                if (page > 0)
+                    inventory.setItem(prevPageItemSlot, getPageItemStack(prevItem));
+            }
+
+            if (fileConfiguration.getBoolean("items.nextPage.enabled", true)) {
+                ItemStack nextItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
+                        ItemType.valueOf(fileConfiguration.getString("items.nextPage.type").toUpperCase()),
+                        fileConfiguration.getString("items.nextPage.value"),
+                        fileConfiguration.getInt("items.nextPage.customModelData"),
+                        fileConfiguration.getString("items.nextPage.name"),
+                        fileConfiguration.getStringList("items.nextPage.lore"), false), "nextPage");
+                inventory.setItem(nextPageItemSlot, getPageItemStack(nextItem));
+            }
 
             subjects.clear();
             this.subjects.addAll(Arrays.asList(Subject.values()));

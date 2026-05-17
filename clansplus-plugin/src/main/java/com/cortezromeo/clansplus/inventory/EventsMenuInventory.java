@@ -117,7 +117,7 @@ public class EventsMenuInventory extends ClanPlusInventoryBase {
                 }
             }
 
-            if (PluginDataManager.getPlayerDatabase(getOwner().getName()).getClan() != null) {
+            if (PluginDataManager.getPlayerDatabase(getOwner().getName()).getClan() != null && fileConfiguration.getBoolean("items.back.enabled", true)) {
                 ItemStack backItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
                         ItemType.valueOf(fileConfiguration.getString("items.back.type").toUpperCase()),
                         fileConfiguration.getString("items.back.value"),
@@ -127,41 +127,45 @@ public class EventsMenuInventory extends ClanPlusInventoryBase {
                 inventory.setItem(backItemSlot, backItem);
             }
 
-            ItemStack closeItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
-                    ItemType.valueOf(fileConfiguration.getString("items.close.type").toUpperCase()),
-                    fileConfiguration.getString("items.close.value"),
-                    fileConfiguration.getInt("items.close.customModelData"),
-                    fileConfiguration.getString("items.close.name"),
-                    fileConfiguration.getStringList("items.close.lore"), false), "close");
-            inventory.setItem(closeItemSlot, closeItem);
-
-            List<String> warEventItemLore = new ArrayList<>();
-            for (String lore : EventManager.getWarEvent().isStarting() ? fileConfiguration.getStringList("items.warEvent.lore.starting") : fileConfiguration.getStringList("items.warEvent.lore.not-starting")) {
-                lore = lore.replace("%closestTimeFrame%", new SimpleDateFormat("HH:mm:ss").format(new Date(EventManager.getWarEvent().getClosestTimeFrameMillis())));
-                lore = lore.replace("%closestTimeFrameTimeLeft%", String.valueOf(StringUtil.getTimeFormat(EventManager.getWarEvent().getClosestTimeFrameTimeLeft(), Messages.TIME_FORMAT_HHMMSS, Messages.TIME_FORMAT_MMSS, Messages.TIME_FORMAT_SS)));
-                lore = lore.replace("%minimumPlayerOnline%", String.valueOf(EventManager.getWarEvent().MINIMUM_PLAYER_ONLINE));
-                lore = lore.replace("%eventTimeLeft%", StringUtil.getTimeFormat(EventManager.getWarEvent().getTimeLeft(), Messages.TIME_FORMAT_HHMMSS, Messages.TIME_FORMAT_MMSS, Messages.TIME_FORMAT_SS));
-                if (lore.contains("%eventTimeFrame%")) {
-                    for (String warEventTimeFrame : EventManager.getWarEvent().EVENT_TIME_FRAME) {
-                        warEventItemLore.add(fileConfiguration.getString("items.warEvent.lore-placeholders.eventTimeFrame").replace("%eventTimeFrame%", warEventTimeFrame));
-                    }
-                    continue;
-                }
-                if (lore.contains("%requiredWorlds%")) {
-                    for (String warEventRequiredWorld : EventManager.getWarEvent().WORLD_REQUIREMENT_WORLDS) {
-                        warEventItemLore.add(fileConfiguration.getString("items.warEvent.lore-placeholders.requiredWorlds").replace("%requiredWorld%", warEventRequiredWorld));
-                    }
-                    continue;
-                }
-                warEventItemLore.add(lore);
+            if (fileConfiguration.getBoolean("items.close.enabled", true)) {
+                ItemStack closeItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
+                        ItemType.valueOf(fileConfiguration.getString("items.close.type").toUpperCase()),
+                        fileConfiguration.getString("items.close.value"),
+                        fileConfiguration.getInt("items.close.customModelData"),
+                        fileConfiguration.getString("items.close.name"),
+                        fileConfiguration.getStringList("items.close.lore"), false), "close");
+                inventory.setItem(closeItemSlot, closeItem);
             }
-            ItemStack warEventItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
-                    ItemType.valueOf(fileConfiguration.getString("items.warEvent.type").toUpperCase()),
-                    fileConfiguration.getString("items.warEvent.value"),
-                    fileConfiguration.getInt("items.warEvent.customModelData"),
-                    fileConfiguration.getString("items.warEvent.name"),
-                    warEventItemLore, false), "warEvent");
-            inventory.setItem(warEventItemSlot, warEventItem);
+
+            if (fileConfiguration.getBoolean("items.warEvent.enabled", true)) {
+                List<String> warEventItemLore = new ArrayList<>();
+                for (String lore : EventManager.getWarEvent().isStarting() ? fileConfiguration.getStringList("items.warEvent.lore.starting") : fileConfiguration.getStringList("items.warEvent.lore.not-starting")) {
+                    lore = lore.replace("%closestTimeFrame%", new SimpleDateFormat("HH:mm:ss").format(new Date(EventManager.getWarEvent().getClosestTimeFrameMillis())));
+                    lore = lore.replace("%closestTimeFrameTimeLeft%", String.valueOf(StringUtil.getTimeFormat(EventManager.getWarEvent().getClosestTimeFrameTimeLeft(), Messages.TIME_FORMAT_HHMMSS, Messages.TIME_FORMAT_MMSS, Messages.TIME_FORMAT_SS)));
+                    lore = lore.replace("%minimumPlayerOnline%", String.valueOf(EventManager.getWarEvent().MINIMUM_PLAYER_ONLINE));
+                    lore = lore.replace("%eventTimeLeft%", StringUtil.getTimeFormat(EventManager.getWarEvent().getTimeLeft(), Messages.TIME_FORMAT_HHMMSS, Messages.TIME_FORMAT_MMSS, Messages.TIME_FORMAT_SS));
+                    if (lore.contains("%eventTimeFrame%")) {
+                        for (String warEventTimeFrame : EventManager.getWarEvent().EVENT_TIME_FRAME) {
+                            warEventItemLore.add(fileConfiguration.getString("items.warEvent.lore-placeholders.eventTimeFrame").replace("%eventTimeFrame%", warEventTimeFrame));
+                        }
+                        continue;
+                    }
+                    if (lore.contains("%requiredWorlds%")) {
+                        for (String warEventRequiredWorld : EventManager.getWarEvent().WORLD_REQUIREMENT_WORLDS) {
+                            warEventItemLore.add(fileConfiguration.getString("items.warEvent.lore-placeholders.requiredWorlds").replace("%requiredWorld%", warEventRequiredWorld));
+                        }
+                        continue;
+                    }
+                    warEventItemLore.add(lore);
+                }
+                ItemStack warEventItem = ClansPlus.nms.addCustomData(ItemUtil.getItem(
+                        ItemType.valueOf(fileConfiguration.getString("items.warEvent.type").toUpperCase()),
+                        fileConfiguration.getString("items.warEvent.value"),
+                        fileConfiguration.getInt("items.warEvent.customModelData"),
+                        fileConfiguration.getString("items.warEvent.name"),
+                        warEventItemLore, false), "warEvent");
+                inventory.setItem(warEventItemSlot, warEventItem);
+            }
         });
     }
 

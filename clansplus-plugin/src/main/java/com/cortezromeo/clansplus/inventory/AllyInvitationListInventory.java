@@ -125,6 +125,7 @@ public class AllyInvitationListInventory extends PaginatedInventory {
             }
 
             Rank requiredRank = playerClanData.getSubjectPermission().get(Subject.MANAGEALLY);
+            itemListSlots = fileConfiguration.getIntegerList("items.clan.slots");
             for (int i = 0; i < getMaxItemsPerPage(); i++) {
                 index = getMaxItemsPerPage() * getPage() + i;
                 if (index >= clans.size())
@@ -148,7 +149,7 @@ public class AllyInvitationListInventory extends PaginatedInventory {
                     clanItemItemMeta.setLore(clanItemLore);
                     clanItem.setItemMeta(clanItemItemMeta);
                     ItemStack itemStack = ClansPlus.nms.addCustomData(ItemUtil.getClanItemStack(clanItem, clanData), "manage=" + clanName);
-                    inventory.addItem(itemStack);
+                    placeListItem(i, itemStack);
                 }
             }
         });

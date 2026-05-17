@@ -123,6 +123,7 @@ public class SetIconMaterialListInventory extends PaginatedInventory {
                 materials.addAll(newMaterials);
             }
 
+            itemListSlots = fileConfiguration.getIntegerList("items.material.slots");
             for (int i = 0; i < getMaxItemsPerPage(); i++) {
                 index = getMaxItemsPerPage() * getPage() + i;
                 if (index >= materials.size())
@@ -136,9 +137,9 @@ public class SetIconMaterialListInventory extends PaginatedInventory {
                                 fileConfiguration.getString("items.material.name"),
                                 fileConfiguration.getStringList("items.material.lore"), false);
                         ItemStack itemStack = ClansPlus.nms.addCustomData(materialItem, "value=" + materials.get(index));
-                        inventory.addItem(itemStack);
+                        placeListItem(i, itemStack);
                     } catch (IllegalArgumentException exception) {
-                        inventory.addItem(ClansPlus.nms.addCustomData(ItemUtil.getItem(
+                        placeListItem(i, ClansPlus.nms.addCustomData(ItemUtil.getItem(
                                 ItemType.valueOf(fileConfiguration.getString("items.unavailableMaterial.type").toUpperCase()),
                                 fileConfiguration.getString("items.unavailableMaterial.value"),
                                 0,
